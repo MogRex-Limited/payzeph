@@ -78,7 +78,7 @@ const Register = () => {
   };
 
   return (
-    <div className='min-h-screen pt-24 flex items-center justify-center bg-gradient-web3'>
+    <div className='min-h-screen md:pt-24 flex items-center justify-center bg-gradient-web3'>
       <motion.div
         className='bg-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-lg p-8 max-w-md w-full text-white'
         initial={{ opacity: 0, y: 50 }}
