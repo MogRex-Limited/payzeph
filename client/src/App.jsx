@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import About from './pages/Landing/About';
 import Footer from './components/Footer';
 import Register from './pages/Landing/Register';
+import Login from './pages/Landing/Login';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/' element={<PublicRoute />}>
           <Route path='' element={<Home />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/about' element={<About />} />
         </Route>
       </Routes>
