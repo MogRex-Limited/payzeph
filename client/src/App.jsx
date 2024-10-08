@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes } from 'react-router-dom';
+import PrivateRoutes from './routes/PrivateRoute';
+import PublicRoute from './routes/PublicRoute';
+import Home from './pages/Landing/Home';
+import Dashboard from './pages/Dashboard/Dashboard';
+import About from './pages/Landing/About';
+import Footer from './components/Footer';
+import Register from './pages/Landing/Register';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className='bmg-gradient-to-br fromm-web3Dark-100 vmia-web3Dark-200 mto-web3Dark-300 bg-gradient-web3 text-white min-h-screen flex flex-col'>
+      <Routes>
+        <Route path='dashboard' element={<PrivateRoutes />}>
+          <Route path='' element={<Dashboard />} />
+        </Route>
+
+        <Route path='/' element={<PublicRoute />}>
+          <Route path='' element={<Home />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/about' element={<About />} />
+        </Route>
+      </Routes>
+      <Footer />
+    </div>
+  );
 }
 
-export default App
+export default App;
