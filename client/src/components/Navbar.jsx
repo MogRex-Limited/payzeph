@@ -67,9 +67,12 @@ function Navbar() {
               >
                 Contact
               </Link>
-              <button className=' py-2 px-6 bg-web3Bright-100 rounded-lg hover:bg-white hover:text-[#071847] hover:font-bold transition duration-300 aninmate-pulse'>
+              <Link
+                to='/dashboard'
+                className=' py-2 px-6 bg-web3Bright-100 rounded-lg hover:bg-white hover:text-[#071847] hover:font-bold transition duration-300 aninmate-pulse'
+              >
                 Register
-              </button>
+              </Link>
             </div>
           </div>
           {/* Mobile menu button */}
