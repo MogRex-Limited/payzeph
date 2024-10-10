@@ -12,6 +12,7 @@ import { useState } from 'react';
 // } from '@heroicons/react/24/outline';
 import AuthContext from '../../../context/AuthProvider';
 import { toast } from 'sonner';
+import { naira } from '../../../assets';
 
 const DashboardHome = () => {
   const { auth } = useContext(AuthContext);
@@ -42,7 +43,7 @@ const DashboardHome = () => {
   return (
     <div className='p-6 rounded-lg shadow-2xl bg-gray-100 min-h-screen'>
       {/* Welcome Section */}
-      <div className='flex justify-between items-center gap-10'>
+      <div className='flex justify-between md:items-center md:flex-row flex-col md:gap-10'>
         <div className='mb-8'>
           <h2 className='text-3xl font-bold text-gray-800'>
             Welcome, {auth?.name || 'User'}!
@@ -150,8 +151,8 @@ const DashboardHome = () => {
       </div>
       {/* Wallet Overview */}
       <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
-        {/* USDC Wallet */}
-        <div className='bg-white rounded-lg shadow p-6'>
+        {/* USD Wallet */}
+        <div className='bg-white rounded-lg shadow-md p-4'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center'>
               <svg
@@ -160,7 +161,7 @@ const DashboardHome = () => {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='h-6 w-6 text-green-500 mr-2'
+                className='h-7 w-7 text-[#2774cb] mr-2'
               >
                 <path
                   strokeLinecap='round'
@@ -168,12 +169,73 @@ const DashboardHome = () => {
                   d='M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
                 />
               </svg>
-
-              <h4 className='text-lg font-semibold text-gray-700'>
-                USDC Wallet
-              </h4>
+              <div>
+                <h4 className='text-lg font-semibold text-gray-700'>
+                  USD Wallet
+                </h4>
+                <p className='text-sm text-gray-500'>Balance: $1000</p>
+              </div>
             </div>
-            <span className='bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5'></span>
+            <span className='  text-xs font-semibold px-2.5 py-0.5'>
+              <button className='bg-[#2774cb] text-white border border-[#2774cb] hover:text-[#2774cb] hover:bg-white rounded-lg px-4 py-2 font-bold'>
+                Manage
+              </button>
+            </span>
+          </div>
+        </div>
+
+        {/* Euro wallet */}
+        <div className='bg-white rounded-lg shadow-md p-4'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='h-7 w-7 text-[#25b471] mr-2'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M14.25 7.756a4.5 4.5 0 1 0 0 8.488M7.5 10.5h5.25m-5.25 3h5.25M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                />
+              </svg>
+
+              <div>
+                <h4 className='text-lg font-semibold text-gray-700'>
+                  Euro Wallet
+                </h4>
+                <p className='text-sm text-gray-500'>Balance: €1000</p>
+              </div>
+            </div>
+            <span className='  text-xs font-semibold px-2.5 py-0.5'>
+              <button className='bg-[#25b471] opacity-30 pointer-events-none cursor-not-allowed text-white border border-[#25b471] hover:text-[#25b471] hover:bg-white rounded-lg px-4 py-2 font-bold'>
+                Coming soon
+              </button>
+            </span>
+          </div>
+        </div>
+
+        {/* Naira wallet */}
+        <div className='bg-white rounded-lg shadow-md p-4'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center'>
+              <img src={naira} alt='' className='h-7 w-7 text-[#25b471] mr-2' />
+
+              <div>
+                <h4 className='text-lg font-semibold text-gray-700'>
+                  Naira Wallet
+                </h4>
+                <p className='text-sm text-gray-500'>Balance: ₦1000</p>
+              </div>
+            </div>
+            <span className='  text-xs font-semibold px-2.5 py-0.5'>
+              <button className='bg-[#25b471] text-white border border-[#25b471] hover:text-[#25b471] hover:bg-white rounded-lg px-4 py-2 font-bold'>
+                Manage
+              </button>
+            </span>
           </div>
         </div>
       </div>{' '}

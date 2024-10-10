@@ -21,6 +21,8 @@ const OTPVerificationPage = () => {
     }
   };
 
+  const email = sessionStorage.getItem('zeph_email');
+
   const handleSubmit = async () => {
     const otpString = otp.join('');
 
@@ -28,7 +30,11 @@ const OTPVerificationPage = () => {
       const loadingToastId = toast.loading('Verifying otp...');
 
       try {
-        const res = await AuthFxns.verifyOTP(otpString);
+        const res = await AuthFxns.verifyOTP({
+          email: email,
+          type: 'verify_email',
+          code: otpString,
+        });
         if (res.response.code === 200) {
           setSending(false);
           toast.dismiss(loadingToastId);
@@ -45,21 +51,21 @@ const OTPVerificationPage = () => {
           toast.error(error.response?.data?.response.message);
         }
       }
-      toast.success('OTP verified successfully!');
     } else {
       toast.error('Invalid OTP. Please try again.');
     }
   };
 
   const handleResend = async () => {
-    const email = sessionStorage.getItem('zeph_email');
     const loadingToastId = toast.loading('Resending otp...');
-
     try {
-      const res = await AuthFxns.userRequestNewOTP({ email: email });
+      const res = await AuthFxns.userRequestNewOTP({
+        email: email,
+        type: 'verify_email',
+      });
       if (res.response.code === 200) {
         setSending(false);
-        setOtp();
+        setOtp(['', '', '', '']);
         toast.dismiss(loadingToastId);
         toast.success('OTP has been resent to your email.');
       }
