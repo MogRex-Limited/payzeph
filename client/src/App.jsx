@@ -1,17 +1,19 @@
 import { Route, Routes } from 'react-router-dom';
 import PrivateRoutes from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
-import Home from './pages/Landing/Home';
+import Home from './pages/Landing/auth/Home';
 import About from './pages/Landing/About';
 import Footer from './components/Footer';
-import Register from './pages/Landing/Register';
+import Register from './pages/Landing/auth/Register';
 import Login from './pages/Landing/Login';
 import DashboardHome from './pages/Dashboard/components/DashboardHome';
-import Settings from './pages/Dashboard/Settings';
+// import Settings from './pages/Dashboard/Settings';
 import EditPersonal from './pages/Dashboard/components/EditPersonal';
 import EditPassword from './pages/Dashboard/components/EditPassword';
 import ProfileInner from './pages/Dashboard/components/ProfileInner';
 import WalletInner from './pages/Dashboard/components/WalletInner';
+import NotFound from './routes/NotFound';
+import OTPVerificationPage from './pages/Landing/auth/Otp';
 
 function App() {
   return (
@@ -32,9 +34,11 @@ function App() {
         <Route path='/' element={<PublicRoute />}>
           <Route path='' element={<Home />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/otp' element={<OTPVerificationPage />} />
           <Route path='/login' element={<Login />} />
           <Route path='/about' element={<About />} />
         </Route>
+        <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
     </div>

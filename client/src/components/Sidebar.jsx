@@ -2,9 +2,18 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import {} from '@heroicons/react/24/outline';
+import { useContext, useState } from 'react';
+import { Logo2 } from '../assets';
+import AuthContext from '../context/AuthProvider';
 
 const Sidebar = () => {
   const location = useLocation();
+  const { setAuth } = useContext(AuthContext);
+  const [isOpen, setIsOpen] = useState(false);
+  const handleLogout = () => {
+    sessionStorage.clear();
+    setAuth(null);
+  };
 
   const menuItems = [
     {
@@ -93,51 +102,161 @@ const Sidebar = () => {
       ),
       path: '/dashboard/settings',
     },
-    {
-      name: 'Logout',
-      icon: (
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          fill='none'
-          viewBox='0 0 24 24'
-          strokeWidth={1.5}
-          stroke='currentColor'
-          className='h-6 w-6'
-        >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            d='M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75'
-          />
-        </svg>
-      ),
-      path: '/logout',
-    },
+    // {
+    //   name: 'Logout',
+    //   icon: (
+    //     <svg
+    //       xmlns='http://www.w3.org/2000/svg'
+    //       fill='none'
+    //       viewBox='0 0 24 24'
+    //       strokeWidth={1.5}
+    //       stroke='currentColor'
+    //       className='h-6 w-6'
+    //     >
+    //       <path
+    //         strokeLinecap='round'
+    //         strokeLinejoin='round'
+    //         d='M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75'
+    //       />
+    //     </svg>
+    //   ),
+    //   path: '/logout',
+    // },
   ];
-
   return (
-    <div className='h-screen fixmed top-0 z-50  w-64 bg-gradient-to-bl from-web3Bright-100 via-web3Bright-200 to-web3Bright-300   text-white flex flex-col'>
-      <div className='h-16 flex items-center justify-center bmg-indigo-900'>
-        <h1 className='text-2xl font-bold'>PayZeph</h1>
-      </div>
-      <nav className='flex-1 px-2 py-4 space-y-2'>
-        {menuItems.map((item) => (
-          <Link
-            key={item.name}
-            to={item.path}
-            className={`flex items-center p-2 text-base font-medium rounded-md hover:bg-indigo-700 transition ${
-              location.pathname === item.path
-                ? 'b,g-indigo-700 bg-gradient-to-bl from-web3Bright-300   to-web3Bright-300'
-                : ''
-            }`}
+    <>
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className='fixed inset-0 bg-black opacity-50 z-40 md:hidden'
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={`h-screen fixed z-50 top-0 lneft-0  w-64 bg-gradient-to-bl from-web3Bright-100 via-web3Bright-200 to-web3Bright-300 text-white transform ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        } transition-transform duration-300 ease-in-out z-50 md:translate-x-0 md:static md:z-50 md:bg-black`}
+      >
+        <div className='h-16 flex items-center justimfy-center bbg-indigo-900'>
+          <div className='flex items-center ml-3'>
+            <img src={Logo2} alt='' className='w-12 h-12 mt-1' />{' '}
+            <h1 className='text-2xl font-bold'>PayZeph</h1>
+          </div>
+          {/* Close button for mobile */}
+          <button
+            className='absolute top-4 right-4 md:hidden'
+            onClick={() => setIsOpen(false)}
+            aria-label='Close Sidebar'
           >
-            {item.icon}
-            <span className='ml-3'>{item.name}</span>
-          </Link>
-        ))}
-      </nav>
-    </div>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+              className='h-6 w-6 text-white'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M6 18 18 6M6 6l12 12'
+              />
+            </svg>
+          </button>
+        </div>
+        <nav className='flex-1 px-2 py-4 space-y-2'>
+          {menuItems.map((item) => (
+            <Link
+              key={item.name}
+              to={item.path}
+              onClick={() => setIsOpen(false)}
+              className={`flex items-center p-2 text-base font-medium rounded-md hover:bg-indigo-700 transition ${
+                location.pathname === item.path ? 'bg-indigo-700' : ''
+              }`}
+            >
+              {item.icon}
+              <span className='ml-3'>{item.name}</span>
+            </Link>
+          ))}
+          <div
+            onClick={() => {
+              setIsOpen(false);
+              handleLogout();
+            }}
+            className={`flex cursor-pointer items-center p-2 text-base font-medium rounded-md hover:bg-indigo-700 transition  `}
+          >
+            {' '}
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+              className='h-6 w-6'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75'
+              />
+            </svg>
+            <span className='ml-3'>Logout</span>
+          </div>
+        </nav>
+      </div>
+
+      {/* Hamburger Menu */}
+      {!isOpen && (
+        <button
+          className='fixed top-4 left-4 z-50 md:hidden bg-indigo-600 text-white p-2 rounded-md'
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          aria-label='Open Sidebar'
+        >
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            strokeWidth={1.5}
+            stroke='currentColor'
+            className='h-6 w-6'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5'
+            />
+          </svg>
+        </button>
+      )}
+    </>
   );
+  // return (
+  //   <div className='h-screen fixmed top-0 z-50  w-64 bg-gradient-to-bl from-web3Bright-100 via-web3Bright-200 to-web3Bright-300   text-white flex flex-col'>
+  //     <div className='h-16 flex items-center justify-center bmg-indigo-900'>
+  //       <h1 className='text-2xl font-bold'>PayZeph</h1>
+  //     </div>
+  //     <nav className='flex-1 px-2 py-4 space-y-2'>
+  //       {menuItems.map((item) => (
+  //         <Link
+  //           key={item.name}
+  //           to={item.path}
+  //           className={`flex items-center p-2 text-base font-medium rounded-md hover:bg-indigo-700 transition ${
+  //             location.pathname === item.path
+  //               ? 'b,g-indigo-700 bg-gradient-to-bl from-web3Bright-300   to-web3Bright-300'
+  //               : ''
+  //           }`}
+  //         >
+  //           {item.icon}
+  //           <span className='ml-3'>{item.name}</span>
+  //         </Link>
+  //       ))}
+  //     </nav>
+  //   </div>
+  // );
 };
 
 export default Sidebar;

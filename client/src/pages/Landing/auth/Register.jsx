@@ -1,77 +1,93 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-// import {
-//   LockClosedIcon,
-//   UserIcon,
-//   MailIcon,
-//   PhoneIcon,
-// } from '@heroicons/react/24/outline';
+import AuthFxns from '../../../services/authServices';
+import { toast } from 'sonner';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const [sending, setSending] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    fullName: '',
+    first_name: '',
+    last_name: '',
     email: '',
-    phone: '',
+    phone_number: '',
     password: '',
-    confirmPassword: '',
   });
-
   const [errors, setErrors] = useState({});
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Validate form
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.fullName.trim()) newErrors.fullName = 'Full Name is required';
+    if (!formData.first_name.trim())
+      newErrors.first_name = 'First Name is required';
+    if (!formData.last_name.trim())
+      newErrors.last_name = 'Last Name is required';
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email address is invalid';
     }
-    if (!formData.phone) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^\d{10}$/.test(formData.phone)) {
-      newErrors.phone = 'Phone number is invalid';
+    if (!formData.phone_number) {
+      newErrors.phone_number = 'Phone number is required';
+    } else if (!/^\d{11}$/.test(formData.phone_number)) {
+      newErrors.phone_number = 'Phone number is invalid';
     }
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
+    // if (!formData.confirmPassword) {
+    //   newErrors.confirmPassword = 'Please confirm your password';
+    // } else if (formData.password !== formData.confirmPassword) {
+    //   newErrors.confirmPassword = 'Passwords do not match';
+    // }
 
     return newErrors;
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formErrors = validate();
 
     if (Object.keys(formErrors).length === 0) {
-      // Submit form (e.g., send data to backend)
-      console.log('Form Submitted', formData);
-      // Reset form
-      setFormData({
-        fullName: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: '',
-      });
-      setErrors({});
+      setSending(true);
+      const loadingToastId = toast.loading('Logging in...');
+      try {
+        const res = await AuthFxns.registerUser(formData);
+        if (res.response.code === 200) {
+          sessionStorage.setItem('zeph_email', formData.email);
+          setSending(false);
+          toast.dismiss(loadingToastId);
+          toast.success('Account created');
+          console.log('Form Submitted', formData);
+          setFormData({
+            first_name: '',
+            last_name: '',
+            email: '',
+            phone_number: '',
+            password: '',
+          });
+          setErrors({});
+          navigate('/otp');
+        }
+      } catch (error) {
+        console.log(error);
+        setSending(false);
+        toast.dismiss(loadingToastId);
+        if (error.message) {
+          toast.error(error.message);
+        } else {
+          toast.error(error.response?.data?.response.message);
+        }
+        // return error.response?.data?.response.message;
+      }
     } else {
       setErrors(formErrors);
     }
@@ -87,13 +103,13 @@ const Register = () => {
       >
         <h2 className='text-3xl font-bold mb-6 text-center'>Register</h2>
         <form onSubmit={handleSubmit} noValidate>
-          {/* Full Name */}
+          {/* First Name */}
           <div className='mb-4'>
             <label
-              htmlFor='fullName'
+              htmlFor='first_name'
               className='block text-sm font-medium mb-1'
             >
-              Full Name
+              First name
             </label>
             <div className='relative'>
               {/* <UserIcon className='h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2' /> */}
@@ -113,18 +129,60 @@ const Register = () => {
               </svg>
               <input
                 type='text'
-                name='fullName'
-                id='fullName'
-                value={formData.fullName}
+                name='first_name'
+                id='first_name'
+                disabled={sending}
+                value={formData.first_name}
                 onChange={handleChange}
                 className={`block w-full pl-10 pr-3 py-2 rounded-md bg-gray-800 bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.fullName ? 'border border-red-500' : ''
+                  errors.first_name ? 'border border-red-500' : ''
                 }`}
                 placeholder='John Doe'
               />
             </div>
-            {errors.fullName && (
-              <p className='text-red-500 text-xs mt-1'>{errors.fullName}</p>
+            {errors.first_name && (
+              <p className='text-red-500 text-xs mt-1'>{errors.first_name}</p>
+            )}
+          </div>
+          {/* Last Name */}
+          <div className='mb-4'>
+            <label
+              htmlFor='last_name'
+              className='block text-sm font-medium mb-1'
+            >
+              Last name
+            </label>
+            <div className='relative'>
+              {/* <UserIcon className='h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2' /> */}
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='size-6 h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
+                />
+              </svg>
+              <input
+                type='text'
+                name='last_name'
+                id='last_name'
+                disabled={sending}
+                value={formData.last_name}
+                onChange={handleChange}
+                className={`block w-full pl-10 pr-3 py-2 rounded-md bg-gray-800 bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  errors.last_name ? 'border border-red-500' : ''
+                }`}
+                placeholder='John Doe'
+              />
+            </div>
+            {errors.last_name && (
+              <p className='text-red-500 text-xs mt-1'>{errors.last_name}</p>
             )}
           </div>
 
@@ -153,6 +211,7 @@ const Register = () => {
                 type='email'
                 name='email'
                 id='email'
+                disabled={sending}
                 value={formData.email}
                 onChange={handleChange}
                 className={`block w-full pl-10 pr-3 py-2 rounded-md bg-gray-800 bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
@@ -168,7 +227,10 @@ const Register = () => {
 
           {/* Phone Number */}
           <div className='mb-4'>
-            <label htmlFor='phone' className='block text-sm font-medium mb-1'>
+            <label
+              htmlFor='phone_number'
+              className='block text-sm font-medium mb-1'
+            >
               Phone Number
             </label>
             <div className='relative'>
@@ -189,18 +251,19 @@ const Register = () => {
               </svg>
               <input
                 type='tel'
-                name='phone'
-                id='phone'
-                value={formData.phone}
+                name='phone_number'
+                id='phone_number'
+                disabled={sending}
+                value={formData.phone_number}
                 onChange={handleChange}
                 className={`block w-full pl-10 pr-3 py-2 rounded-md bg-gray-800 bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.phone ? 'border border-red-500' : ''
+                  errors.phone_number ? 'border border-red-500' : ''
                 }`}
                 placeholder='1234567890'
               />
             </div>
-            {errors.phone && (
-              <p className='text-red-500 text-xs mt-1'>{errors.phone}</p>
+            {errors.phone_number && (
+              <p className='text-red-500 text-xs mt-1'>{errors.phone_number}</p>
             )}
           </div>
 
@@ -232,6 +295,7 @@ const Register = () => {
                 type={showPassword ? 'text' : 'password'}
                 name='password'
                 id='password'
+                disabled={sending}
                 value={formData.password}
                 onChange={handleChange}
                 className={`block w-full pl-10 pr-3 py-2 rounded-md bg-gray-800 bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
@@ -287,94 +351,10 @@ const Register = () => {
             )}
           </div>
 
-          {/* Confirm Password */}
-          <div className='mb-6'>
-            <label
-              htmlFor='confirmPassword'
-              className='block text-sm font-medium mb-1'
-            >
-              Confirm Password
-            </label>
-            <div className='relative'>
-              {/* <LockClosedIcon className='h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2' /> */}
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='size-6 h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z'
-                />
-              </svg>{' '}
-              <input
-                type={showPassword ? 'text' : 'password'}
-                name='confirmPassword'
-                id='confirmPassword'
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className={`block w-full pl-10 pr-3 py-2 rounded-md bg-gray-800 bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.confirmPassword ? 'border border-red-500' : ''
-                }`}
-                placeholder='********'
-              />{' '}
-              <button
-                type='button'
-                className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none'
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={1.5}
-                    stroke='currentColor'
-                    className='size-6'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88'
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={1.5}
-                    stroke='currentColor'
-                    className='size-6'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z'
-                    />
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
-                    />
-                  </svg>
-                )}
-              </button>
-            </div>
-            {errors.confirmPassword && (
-              <p className='text-red-500 text-xs mt-1'>
-                {errors.confirmPassword}
-              </p>
-            )}
-          </div>
-
           {/* Submit Button */}
           <button
             type='submit'
+            disabled={sending}
             className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition duration-300'
           >
             Register

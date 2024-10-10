@@ -11,7 +11,6 @@ function DashNav() {
   };
 
   const handleLogout = () => {
-    // Clear the session and update auth context
     sessionStorage.clear();
     setAuth(null);
   };

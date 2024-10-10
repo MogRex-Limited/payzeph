@@ -2,7 +2,7 @@
 
 import { useContext, useEffect } from 'react';
 // import { ClipboardIcon, LinkIcon } from '@heroicons/react/outline';
-// import QRCode from 'qrcode.react';
+import QRCode from 'react-qr-code';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useState } from 'react';
 // import {
@@ -179,14 +179,14 @@ const DashboardHome = () => {
       </div>{' '}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6  mb-8'>
         {/* Fund Transfer Section */}
-        <div className='bg-blue-500 text-white rounded-lg p-3 flex items-center'>
+        <div className='bg-green-500 text-white rounded-lg p-3 flex items-center'>
           <h3 className='text-xl font-bold flex-1'>Fund Transfer</h3>
-          <button className='bg-white text-blue-500 rounded-lg px-4 py-2 font-bold'>
+          <button className='bg-white text-green-500 rounded-lg px-4 py-2 font-bold'>
             Send Money
           </button>
         </div>
         {/* USDC Wallet Section */}
-        <div className='bg-green-500 text-white rounded-lg p-3 flex items-center'>
+        <div className='bg-blue-500 text-white rounded-lg p-3 flex items-center'>
           <div className='flex-1'>
             <div className='flex items-center'>
               <svg
@@ -209,7 +209,7 @@ const DashboardHome = () => {
               </div>
             </div>
           </div>
-          <button className='bg-white text-green-500 rounded-lg px-4 py-2 font-bold'>
+          <button className='bg-white text-blue-500 rounded-lg px-4 py-2 font-bold'>
             Manage
           </button>
         </div>
@@ -219,14 +219,14 @@ const DashboardHome = () => {
           <h3 className='text-lg font-semibold text-gray-700 mb-4'>
             ZephCode QR
           </h3>
-          {/* <QRCode
+          <QRCode
             value={zephLink}
             size={200}
             bgColor='#ffffff'
             fgColor='#6366F1'
             level='H'
             includeMargin={true}
-          /> */}
+          />
           <p className='mt-4 text-gray-600 text-center'>
             Scan this QR code to make a payment to your ZephID.
           </p>
