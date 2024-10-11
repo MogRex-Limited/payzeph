@@ -1,24 +1,25 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
+import AuthFxns from '../../services/authServices';
 // import { LockClosedIcon, MailIcon } from '@heroicons/react/outline';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [sending, setSending] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  const [errors, setErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
-
-  // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Validate form
   const validate = () => {
     const newErrors = {};
 
@@ -35,15 +36,43 @@ const Login = () => {
     return newErrors;
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formErrors = validate();
 
     if (Object.keys(formErrors).length === 0) {
-      // Submit form (e.g., authenticate user)
-      console.log('Login Successful', formData);
-      // Reset form
+      setSending(true);
+      const loadingToastId = toast.loading('Logging in...');
+      try {
+        const res = await AuthFxns.loginUser(formData);
+        if (res.response.code === 200) {
+          console.log(res.response.data.token);
+          sessionStorage.setItem('zeph_token', res.response.data.token);
+          setSending(false);
+          toast.dismiss(loadingToastId);
+          setFormData({
+            email: '',
+            password: '',
+          });
+          setErrors({});
+          navigate('/two-factor');
+        }
+      } catch (error) {
+        setSending(false);
+        toast.dismiss(loadingToastId);
+        if (error.response.data.response.message === 'Invalid data') {
+          const errorData = error.response.data.response.errors;
+          const errorMessages = Object.keys(errorData)
+            .map((field) => errorData[field].join(', '))
+            .join(' ');
+          toast.error(errorMessages);
+        } else if (error.message) {
+          toast.error(error.message);
+        } else {
+          toast.error(error.response.data.response.message);
+        }
+      }
+
       setFormData({
         email: '',
         password: '',
@@ -89,6 +118,7 @@ const Login = () => {
                 type='email'
                 name='email'
                 id='email'
+                disabled={sending}
                 value={formData.email}
                 onChange={handleChange}
                 className={`block w-full pl-10 pr-3 py-2 rounded-md bg-gray-800 bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
@@ -130,6 +160,7 @@ const Login = () => {
                 type={showPassword ? 'text' : 'password'}
                 name='password'
                 id='password'
+                disabled={sending}
                 value={formData.password}
                 onChange={handleChange}
                 className={`block w-full pl-10 pr-3 py-2 rounded-md bg-gray-800 bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
@@ -204,6 +235,7 @@ const Login = () => {
 
           {/* Submit Button */}
           <button
+            disabled={sending}
             type='submit'
             className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition duration-300'
           >

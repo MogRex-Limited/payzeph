@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Logo2 } from '../assets';
+import { LogoWhite, LogoDark } from '../assets/index';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +18,14 @@ function Navbar() {
     };
   }, []);
 
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+      setIsOpen(false);
+    }
+  };
+
   return (
     <nav
       className={`fixed w-full z-10 transition-colors duration-300 ${
@@ -29,15 +37,19 @@ function Navbar() {
           {/* Logo */}
 
           <div className='flex-shrink-0 flex items-center gap-1'>
-            <img src={Logo2} alt='' className='w-10 h-10 rounded-lg' />
-            <Link
+            <img
+              src={scrollPosition > 0 ? LogoDark : LogoWhite}
+              alt=''
+              className='w-36  '
+            />
+            {/* <Link
               to='/'
               className={`text-2xl font-bold ${
                 scrollPosition > 0 ? 'text-[#071847]' : 'text-white'
               }`}
             >
               PayZeph
-            </Link>
+            </Link> */}
           </div>
           {/* Menu */}
           <div className='hidden md:block'>
@@ -50,23 +62,25 @@ function Navbar() {
               >
                 Home
               </Link>
-              <Link
-                to='/about'
+              <a
+                href='#about'
+                onClick={() => scrollToSection('about')}
                 className={`px-3 py-2 rounded-md text-sm font-medium hover:text-blue-400 transition duration-300 ${
                   scrollPosition > 0 ? 'text-[#071847]' : 'text-white'
                 }`}
               >
                 About
-              </Link>
+              </a>
 
-              <Link
-                to='/contact'
+              <a
+                href='#contact'
+                onClick={() => scrollToSection('contact')}
                 className={`px-3 py-2 rounded-md text-sm font-medium hover:text-blue-400 transition duration-300 ${
                   scrollPosition > 0 ? 'text-[#071847]' : 'text-white'
                 }`}
               >
                 Contact
-              </Link>
+              </a>
               <Link
                 to='/register'
                 className=' py-2 px-6 bg-web3Bright-100 rounded-lg hover:bg-white hover:text-[#071847] hover:font-bold transition duration-300 aninmate-pulse'
@@ -139,7 +153,7 @@ function Navbar() {
               Home
             </Link>
             <Link
-              to='/about'
+              to='#about'
               onClick={() => setIsOpen(false)}
               className={`block px-3 py-2 rounded-md text-base font-medium hover:text-blue-400 transition duration-300 ${
                 scrollPosition > 0 ? 'text-[#071847]' : 'text-white'

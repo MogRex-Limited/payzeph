@@ -4,18 +4,13 @@ import { createContext, useState, useEffect } from 'react';
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  // const getInitialState = () => {
-  //   const authString = sessionStorage.getItem('userAuth');
-  //   const authDetails = JSON.parse(authString);
-  //   return authDetails;
-  // };
-
   const getInitialState = () => {
     const authString = sessionStorage.getItem('userAuth');
     try {
       const authDetails = JSON.parse(authString);
       return authDetails || { success: false };
     } catch (error) {
+      console.log(error);
       return { success: false };
     }
   };

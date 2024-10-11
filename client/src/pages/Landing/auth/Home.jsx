@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
@@ -10,7 +9,7 @@ const Home = () => {
       <section
         className='bg-cover  bg-no-repeat bg-center '
         style={{
-          backgroundImage: `url(https://i.ibb.co/L5q8SJ9/payzeph2.png`,
+          backgroundImage: `url(https://i.ibb.co/L5q8SJ9/PayZeph2.png`,
         }}
       >
         <div className='bg-[#071847] bg-opacity-85 min-h-screen flex flex-col justify-center items-center text-center px-4 pt-20'>
@@ -44,25 +43,28 @@ const Home = () => {
       </section>
 
       {/*  About Section */}
-      <section className='py-20 bg-gradient-to-tr from-web3Bright-300 via-web3Bright-200 to-web3Bright-100'>
+      <section
+        id='about'
+        className='py-20 bg-gradient-to-tr from-web3Bright-300 via-web3Bright-200 to-web3Bright-100'
+      >
         <div className='max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center'>
           <div className='md:w-1/2 animate-slide-in-left'>
             <img
               src='https://via.placeholder.com/400'
-              alt='About Payzeph'
+              alt='About PayZeph'
               className='rounded-lg shadow-lg'
             />
           </div>
           <div className='md:w-1/2 mt-8 md:mt-0 md:pl-12 animate-slide-in-right'>
             <h2 className='text-4xl font-bold mb-4'>About PayZeph</h2>
             <p className='mb-4'>
-              Payzeph is a cutting-edge platform designed to provide seamless
+              PayZeph is a cutting-edge platform designed to provide seamless
               access to digital dollars globally. Our mission is to empower
               individuals and businesses to transact with ease and security in
               the digital economy.
             </p>
             <p>
-              Leveraging the latest Web3 technologies, Payzeph ensures that your
+              Leveraging the latest Web3 technologies, PayZeph ensures that your
               financial transactions are not only efficient but also highly
               secure.
             </p>
@@ -152,7 +154,7 @@ const Home = () => {
             {/* Testimonial 1 */}
             <div className='bg-web3Dark-300 p-6 rounded-lg shadow-lg max-w-sm transform hover:translate-y-2 transition duration-300'>
               <p className='mb-4'>
-                "Payzeph has revolutionized the way I handle my digital
+                "PayZeph has revolutionized the way I handle my digital
                 transactions. It's fast, secure, and incredibly user-friendly."
               </p>
               <h4 className='font-semibold'>- Alex Johnson</h4>
@@ -170,22 +172,38 @@ const Home = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className='py-20 bg-gradient-to-bl from-web3Bright-100 via-web3Bright-200 to-web3Bright-300'>
+      <section
+        id='contact'
+        className='py-20 bg-gradient-to-bl from-web3Bright-100 via-web3Bright-200 to-web3Bright-300'
+      >
         <div className='max-w-6xl mx-auto px-4 text-center'>
-          <h2 className='text-4xl font-bold mb-4 animate-fade-in'>
-            Join Payzeph Today
-          </h2>
-          <p className='mb-8'>
+          <motion.h2
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className='text-4xl font-bold mb-4 animate-fade-in'
+          >
+            Join PayZeph Today
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className='mb-8'
+          >
             Start your journey towards seamless and secure digital transactions.
-            Experience the future of payments with Payzeph.
-          </p>
+            Experience the future of payments with PayZeph.
+          </motion.p>
 
-          <Link
-            to='/register'
+          <motion.a
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 1.2 }}
+            href='/register'
             className='mt-6 py-3 px-8 bg-web3Bright-100 rounded-lg hover:bg-white hover:text-[#071847] hover:font-bold transition duration-300 animate-pulse'
           >
             Sign Up Now
-          </Link>
+          </motion.a>
         </div>
       </section>
     </div>

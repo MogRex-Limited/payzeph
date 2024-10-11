@@ -1,9 +1,7 @@
-// src/components/Sidebar.js
-
 import { Link, useLocation } from 'react-router-dom';
 import {} from '@heroicons/react/24/outline';
 import { useContext, useState } from 'react';
-import { Logo2 } from '../assets';
+// import { Logo2 } from '../assets';
 import AuthContext from '../context/AuthProvider';
 
 const Sidebar = () => {
@@ -102,26 +100,6 @@ const Sidebar = () => {
       ),
       path: '/dashboard/settings',
     },
-    // {
-    //   name: 'Logout',
-    //   icon: (
-    //     <svg
-    //       xmlns='http://www.w3.org/2000/svg'
-    //       fill='none'
-    //       viewBox='0 0 24 24'
-    //       strokeWidth={1.5}
-    //       stroke='currentColor'
-    //       className='h-6 w-6'
-    //     >
-    //       <path
-    //         strokeLinecap='round'
-    //         strokeLinejoin='round'
-    //         d='M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75'
-    //       />
-    //     </svg>
-    //   ),
-    //   path: '/logout',
-    // },
   ];
   return (
     <>
@@ -135,13 +113,13 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`h-screen fixed z-50 top-0 lneft-0  w-64 bg-gradient-to-bl from-web3Bright-100 via-web3Bright-200 to-web3Bright-300 text-white transform ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition-transform duration-300 ease-in-out z-50 md:translate-x-0 md:static md:z-50 md:bg-black`}
+        className={`h-screen fixed z-50 top-0 left-0  w-64 bg-gradient-to-bl from-web3Bright-100 via-web3Bright-200 to-web3Bright-300 text-white transform ${
+          isOpen ? 'translate-x-0' : '-translate-x-full '
+        } transition-transform duration-300 ease-in-out z-50 md:translate-x-0  md:z-50 md:bg-black`}
       >
         <div className='h-16 flex items-center justimfy-center bbg-indigo-900'>
           <div className='flex items-center ml-3'>
-            <img src={Logo2} alt='' className='w-12 h-12 mt-1' />{' '}
+            {/* <img src={Logo2} alt='' className='w-12 h-12 mt-1' />{' '} */}
             <h1 className='text-2xl font-bold'>PayZeph</h1>
           </div>
           {/* Close button for mobile */}
@@ -210,7 +188,7 @@ const Sidebar = () => {
       {/* Hamburger Menu */}
       {!isOpen && (
         <button
-          className='fixed top-4 left-4 z-50 md:hidden bg-indigo-600 text-white p-2 rounded-md'
+          className='fixed top-4 left-6 z-50 md:hidden bg-indigo-600 text-white p-2 rounded-md'
           onClick={() => {
             setIsOpen(true);
           }}

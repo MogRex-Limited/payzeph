@@ -58,7 +58,7 @@ const Register = () => {
 
     if (Object.keys(formErrors).length === 0) {
       setSending(true);
-      const loadingToastId = toast.loading('Logging in...');
+      const loadingToastId = toast.loading('Submitting...');
       try {
         const res = await AuthFxns.registerUser(formData);
         if (res.response.code === 200) {
@@ -78,15 +78,19 @@ const Register = () => {
           navigate('/otp');
         }
       } catch (error) {
-        console.log(error);
         setSending(false);
         toast.dismiss(loadingToastId);
-        if (error.message) {
+        if (error.response.data.response.message === 'Invalid data') {
+          const errorData = error.response.data.response.errors;
+          const errorMessages = Object.keys(errorData)
+            .map((field) => errorData[field].join(', '))
+            .join(' ');
+          toast.error(errorMessages);
+        } else if (error.message) {
           toast.error(error.message);
         } else {
-          toast.error(error.response?.data?.response.message);
+          toast.error(error.response.data.response.message);
         }
-        // return error.response?.data?.response.message;
       }
     } else {
       setErrors(formErrors);
