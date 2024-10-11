@@ -17,7 +17,7 @@ const UsdWallet = () => {
   const [fundCurrency, setFundCurrency] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [balance, setBalance] = useState(1000);
+  const [balance, setBalance] = useState(0);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -104,7 +104,7 @@ const UsdWallet = () => {
 
       {/* Fund Modal */}
       <Transition.Root show={isModalOpen} as={Fragment}>
-        <Dialog as='div' className='relative z-10' onClose={closeModal}>
+        <Dialog as='div' className='relative z-50' onClose={closeModal}>
           <TransitionChild
             as={Fragment}
             enter='ease-out duration-300'

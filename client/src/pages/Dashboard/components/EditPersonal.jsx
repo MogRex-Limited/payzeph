@@ -151,7 +151,7 @@ const EditPersonal = () => {
                 required
               />
             </div>
-            <div className='flex items-center'>
+            {/* <div className='flex items-center'>
               <input
                 type='checkbox'
                 name='twoFA'
@@ -163,7 +163,7 @@ const EditPersonal = () => {
               <label htmlFor='twoFA' className='ml-2 block text-white'>
                 Enable Two-Factor Authentication (2FA)
               </label>
-            </div>
+            </div> */}
             {twoFAEnabled && (
               <div className='flex flex-col items-center mb-4'>
                 <QRCode

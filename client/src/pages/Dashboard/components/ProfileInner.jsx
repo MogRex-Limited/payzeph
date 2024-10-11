@@ -46,14 +46,14 @@ const ProfileInner = () => {
   };
 
   return (
-    <div className='p-6 rounded-lg text-gray-800 shadow-2xl bg-gray-100  '>
+    <div className='p-6 rounded-lg text-gray-800 shadow-xl bg-gray-100  '>
       <div className=' '>
         <h2 className='text-3xl font-semibold text-gray-900 mb-6'>Profile</h2>
 
         {/* User Information */}
-        <div className='flex items-top justify-between  space-x-4 mb-8'>
+        <div className='grid grid-cols-1 md:grid-cols-12 items-top justify-between  space-x-4 mb-8'>
           {/* User icon */}
-          <div>
+          <div className='bg-white rounded-lg md:col-span-8 p-4 shadow-md'>
             <div className='flex items-center'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -92,7 +92,7 @@ const ProfileInner = () => {
               </p>
             </div>
           </div>
-          <div className='mb-8'>
+          <div className=' md:col-span-4'>
             <ZephQrCode />
           </div>
         </div>

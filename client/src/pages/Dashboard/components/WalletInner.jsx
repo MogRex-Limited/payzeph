@@ -320,7 +320,7 @@ const WalletInner = () => {
 
             {/* Modal Implementation */}
             <Transition appear show={isOpen} as={Fragment}>
-              <Dialog as='div' className='relative z-10' onClose={closeModal}>
+              <Dialog as='div' className='relative z-50' onClose={closeModal}>
                 {/* Overlay */}
                 <TransitionChild
                   as={Fragment}

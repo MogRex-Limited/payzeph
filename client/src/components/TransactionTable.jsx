@@ -109,6 +109,19 @@ const transactionsData = [
       notes: 'Reversed due to insufficient funds',
     },
   },
+  {
+    id: 9,
+    date: '2024-04-04',
+    amount: 300,
+    status: 'Reversed',
+    source: 'Crypto',
+    details: {
+      transactionId: 'TXN123459',
+      recipient: '0x123456ABCDEF',
+      method: 'Crypto Wallet',
+      notes: 'Reversed due to insufficient funds',
+    },
+  },
   // Add more transactions as needed
 ];
 
@@ -134,8 +147,8 @@ const TransactionTable = () => {
   };
 
   return (
-    <div className='bg-white rounded-lg shadow p-6'>
-      <h2 className='text-2xl font-semibold mb-4 text-gray-700'>
+    <div className='bg-white rounded-lg shadow p-6 pb-2 pt-3'>
+      <h2 className='text-2xl font-semibold mb-3 text-gray-700'>
         Transaction History
       </h2>
       <div className='overflow-auto'>

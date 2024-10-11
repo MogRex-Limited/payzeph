@@ -78,7 +78,6 @@ const Register = () => {
           navigate('/otp');
         }
       } catch (error) {
-        console.log(error.response.data.response);
         setSending(false);
         toast.dismiss(loadingToastId);
         if (error.response.data.response.message === 'Invalid data') {
@@ -92,7 +91,6 @@ const Register = () => {
         } else {
           toast.error(error.response.data.response.message);
         }
-        // return error.response?.data?.response.message;
       }
     } else {
       setErrors(formErrors);

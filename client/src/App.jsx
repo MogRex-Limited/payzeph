@@ -14,6 +14,7 @@ import ProfileInner from './pages/Dashboard/components/ProfileInner';
 import WalletInner from './pages/Dashboard/components/WalletInner';
 import NotFound from './routes/NotFound';
 import OTPVerificationPage from './pages/Landing/auth/Otp';
+import TwoFA from './pages/Landing/auth/TwoFactor';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path='' element={<Home />} />
           <Route path='/register' element={<Register />} />
           <Route path='/otp' element={<OTPVerificationPage />} />
+          <Route path='/two-factor' element={<TwoFA />} />
           <Route path='/login' element={<Login />} />
           <Route path='/about' element={<About />} />
         </Route>

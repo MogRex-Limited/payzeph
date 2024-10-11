@@ -39,7 +39,7 @@ const DashboardHome = () => {
   return (
     <div className='p-6  rounded-lg shadow-2xl bg-gray-100  '>
       {/* Welcome Section */}
-      <div className='flex justify-between lg:items-center lg:flex-row flex-col lg:gap-10'>
+      <div className='flex justify-between lg:items-start xl:items-center lg:flex-row flex-col lg:gap-10'>
         <div className='mb-8'>
           <h2 className='text-3xl font-bold text-gray-800'>
             Welcome, {auth?.name || 'User'}!
@@ -48,7 +48,7 @@ const DashboardHome = () => {
             Manage your account and transactions seamlessly.
           </p>
         </div>{' '}
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6  mb-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2   gap-6  mb-8'>
           {/* ZephID */}
 
           <div className='bg-indigo-500 shadow-lg text-white rounded-lg p-3 flex items-center'>
@@ -146,39 +146,9 @@ const DashboardHome = () => {
         </div>
       </div>
       {/* Wallet Overview */}
-      <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8'>
+      <div className='grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 gap-6 mb-8'>
         {/* USD Wallet */}
-        {/* <div className='bg-white rounded-lg shadow-md p-4'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='h-7 w-7 text-[#2774cb] mr-2'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
-                />
-              </svg>
-              <div>
-                <h4 className='text-lg font-semibold text-gray-700'>
-                  USD Wallet
-                </h4>
-                <p className='text-sm text-gray-500'>Balance: $1000</p>
-              </div>
-            </div>
-            <span className='  text-xs font-semibold px-2.5 py-0.5'>
-              <button className='bg-[#2774cb] text-white border border-[#2774cb] hover:text-[#2774cb] hover:bg-white rounded-lg px-4 py-2 font-bold'>
-                Fund
-              </button>
-            </span>
-          </div>
-        </div> */}
+
         <UsdWallet />
 
         {/* Euro wallet */}
@@ -230,19 +200,80 @@ const DashboardHome = () => {
             </div>
             <span className='  text-xs font-semibold px-2.5 py-0.5'>
               <button className='bg-[#25b471] text-white border border-[#25b471] hover:text-[#25b471] hover:bg-white rounded-lg px-4 py-2 font-bold'>
-                Manage
+                Activate
               </button>
             </span>
           </div>
         </div>
       </div>{' '}
-      <div className='grid grid-cols-1 lg:grid-cols-12 gap-6  mb-8'>
+      <div className='grid grid-cols-1 xl:grid-cols-12 gap-6  mb-6'>
         <div className=' col-span-8'>
           <TransactionTable />
         </div>
-        <div className='c col-span-8 lg:col-span-4'>
-          <ZephQrCode />
-          <div className=' bg-white rounded-lg mt-8 shadow-md p-6'>lol</div>
+        <div className='c col-span-8 xl:col-span-4'>
+          <ZephQrCode />{' '}
+          <div className=' bg-white rounded-lg my-10 shadow-md p-6'>
+            <div className='flex items-start'>
+              {/* Security Icon */}
+
+              <div className='flex-1'>
+                <h3 className='text-xl font-bold mb-6 text-gray-800'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-6 w-6 text-[#071847d1] mr-2 inline-block'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z'
+                    />
+                  </svg>
+                  Enhanced Security
+                </h3>
+                <p className='text-gray-600 mt-2'>
+                  To protect your funds and prevent unauthorized access to your
+                  account, we enforce Two-Factor Authentication (2FA) at all
+                  logins. 2FA adds an extra layer of security by requiring a
+                  unique verification code in addition to your password.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className='bg-white rounded-lg  shadow-md p-6'>
+            <div className='flex items-start'>
+              {/* Support Icon */}
+
+              <div className='flex-1'>
+                <h3 className='text-xl font-bold text-gray-800'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={2}
+                    stroke='currentColor'
+                    className='h-6 w-6 text-[#071847d1] mr-2 inline-block'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 0 8.835-2.535m0 0A23.74 23.74 0 0 0 18.795 3m.38 1.125a23.91 23.91 0 0 1 1.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 0 0 1.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 0 1 0 3.46'
+                    />
+                  </svg>
+                  24/7 Customer Support
+                </h3>
+                <p className='text-gray-600 mt-2'>
+                  Our dedicated customer support team is available around the
+                  clock to assist you with any questions or issues. Whether
+                  it&apos;s day or night, we&apos;re here to ensure your
+                  experience is smooth and your concerns are addressed promptly.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className='  bg-white rounded-lg shadow-md p-6'>
