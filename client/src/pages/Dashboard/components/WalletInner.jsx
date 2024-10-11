@@ -1,8 +1,24 @@
-// src/pages/Dashboard/DashboardHome.js
 // import QRCode from 'qrcode.react';
+import { useState, Fragment } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
+} from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const WalletInner = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
   const zephID = 'Z5647-745';
   const usdcWallet = {
     currency: 'USDC',
@@ -16,7 +32,7 @@ const WalletInner = () => {
   };
   const fiatCurrencies = [
     { name: 'USD', active: true },
-    { name: 'EUR', active: true },
+    { name: 'EUR', active: false },
     { name: 'GBP', active: false },
     // Add more as needed
   ];
@@ -229,27 +245,27 @@ const WalletInner = () => {
         </div>
 
         {/* Fiat Currencies Activation */}
-        <div className='bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 mb-8'>
-          <h3 className='text-xl font-bold text-white mb-4'>
+        <div className='bg-white   backdrop-blur-md rounded-lg p-6 mb-8'>
+          <h3 className='text-xl font-bold   mb-4'>
             Available Fiat Currencies
           </h3>
           <div className='overflow-x-auto'>
             <table className='min-w-full bg-transparent'>
               <thead>
                 <tr>
-                  <th className='py-2 px-4 text-left text-white'>Currency</th>
-                  <th className='py-2 px-4 text-left text-white'>Status</th>
-                  <th className='py-2 px-4 text-left text-white'>Action</th>
+                  <th className='py-2 px-4 text-left  '>Currency</th>
+                  <th className='py-2 px-4 text-left  '>Status</th>
+                  <th className='py-2 px-4 text-left  '>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {fiatCurrencies.map((currency) => (
                   <tr
                     key={currency.name}
-                    className='border-t border-white bg-transparent'
+                    className='border-t border-gray-300 bg-transparent'
                   >
-                    <td className='py-2 px-4 text-white'>{currency.name}</td>
-                    <td className='py-2 px-4 text-white'>
+                    <td className='py-2 px-4  '>{currency.name}</td>
+                    <td className='py-2 px-4  '>
                       {currency.active ? 'Active' : 'Inactive'}
                     </td>
                     <td className='py-2 px-4'>
@@ -271,30 +287,125 @@ const WalletInner = () => {
         </div>
 
         {/* Dashboard API Section */}
-        <div className='bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 mb-8'>
-          <h3 className='text-xl font-bold text-white mb-4'>Dashboard API</h3>
-          <p className='text-gray-300 mb-4'>
+        <div className='bg-white  rounded-lg p-6 mb-8'>
+          <h3 className='text-xl font-bold   mb-1'>Dashboard API</h3>
+          <p className='text-gray-400 mb-6'>
             Access your dashboard data through our secure API for seamless
             integration with your applications.
           </p>
-          <button className='flex items-center space-x-1 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-              strokeWidth={1.5}
-              stroke='currentColor'
-              className='h-5 w-5'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z'
-              />
-            </svg>
 
-            <span>View API Documentation</span>
-          </button>
+          <>
+            {/* View API Documentation Button */}
+            <button
+              onClick={openModal}
+              className='flex items-center space-x-1 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='h-5 w-5'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z'
+                />
+              </svg>
+
+              <span>View API Documentation</span>
+            </button>
+
+            {/* Modal Implementation */}
+            <Transition appear show={isOpen} as={Fragment}>
+              <Dialog as='div' className='relative z-10' onClose={closeModal}>
+                {/* Overlay */}
+                <TransitionChild
+                  as={Fragment}
+                  enter='ease-out duration-300'
+                  enterFrom='opacity-0'
+                  enterTo='opacity-100'
+                  leave='ease-in duration-200'
+                  leaveFrom='opacity-100'
+                  leaveTo='opacity-0'
+                >
+                  <div className='fixed inset-0 bg-black backdrop-blur-[2px] bg-opacity-30' />
+                </TransitionChild>
+
+                {/* Modal Panel */}
+                <div className='fixed inset-0 overflow-y-auto'>
+                  <div className='flex min-h-full items-center justify-center p-4 text-center'>
+                    <TransitionChild
+                      as={Fragment}
+                      enter='ease-out duration-300'
+                      enterFrom='opacity-0 scale-95'
+                      enterTo='opacity-100 scale-100'
+                      leave='ease-in duration-200'
+                      leaveFrom='opacity-100 scale-100'
+                      leaveTo='opacity-0 scale-95'
+                    >
+                      <DialogPanel className='relative w-full max-w-md transform overflow-hidden rounded-lg bg-gradient-to-br from-[#071847] via-blue-800 to-purple-600 p-6 text-left align-middle shadow-xl transition-all'>
+                        {/* Close Button */}
+                        <button
+                          type='button'
+                          className='absolute top-3 right-3 text-white hover:text-gray-300'
+                          onClick={closeModal}
+                        >
+                          <XMarkIcon className='h-6 w-6' aria-hidden='true' />
+                        </button>
+
+                        {/* Modal Content */}
+                        <div className='mt-4'>
+                          <div className='flex items-center justify-center mb-4'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              strokeWidth={1.5}
+                              stroke='currentColor'
+                              className='h-12 w-12 text-white'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                d='M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z'
+                              />
+                            </svg>
+                          </div>
+                          <Dialog.Title
+                            as='h3'
+                            className='text-lg font-medium leading-6 text-center text-white'
+                          >
+                            API Documentation
+                          </Dialog.Title>
+                          <div className='mt-2'>
+                            <p className='text-sm text-center text-gray-200'>
+                              Coming Soon! Stay tuned for our comprehensive API
+                              documentation to integrate seamlessly with
+                              PayZeph.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Optional: Add additional content or links here */}
+                        <div className='mt-4'>
+                          <button
+                            type='button'
+                            className='w-full inline-flex justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+                            onClick={closeModal}
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </DialogPanel>
+                    </TransitionChild>
+                  </div>
+                </div>
+              </Dialog>
+            </Transition>
+          </>
         </div>
       </div>
       {/* Add more dashboard widgets and information here */}

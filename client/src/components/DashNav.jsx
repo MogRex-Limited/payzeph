@@ -16,7 +16,7 @@ function DashNav() {
   };
 
   return (
-    <nav className='shadow-2xl z-0 top-0 fixmed w-full b,g-gray-800 p-4 bg-gradient-to-bl from-web3Bright-300 via-web3Bright-100 to-web3Bright-300'>
+    <nav className='shadow-2xl z-10 top-0 fixed   w-full b,g-gray-800 p-4 bg-gradient-to-bl from-web3Bright-300 via-web3Bright-100 to-web3Bright-300'>
       <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
         <div className='flex justify-between items-center'>
           {/* Logo */}

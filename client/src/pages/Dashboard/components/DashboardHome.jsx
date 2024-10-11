@@ -1,18 +1,14 @@
 // src/pages/Dashboard/DashboardHome.js
 
 import { useContext, useEffect } from 'react';
-// import { ClipboardIcon, LinkIcon } from '@heroicons/react/outline';
-import QRCode from 'react-qr-code';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useState } from 'react';
-// import {
-//   CurrencyDollarIcon,
-//   CreditCardIcon,
-//   BanknotesIcon,
-// } from '@heroicons/react/24/outline';
 import AuthContext from '../../../context/AuthProvider';
 import { toast } from 'sonner';
 import { naira } from '../../../assets';
+import ZephQrCode from '../../../components/ZephQrCode';
+import TransactionTable from '../../../components/TransactionTable';
+import UsdWallet from '../../../components/USDWallet';
 
 const DashboardHome = () => {
   const { auth } = useContext(AuthContext);
@@ -41,9 +37,9 @@ const DashboardHome = () => {
   }, [copied, copied2]);
 
   return (
-    <div className='p-6 rounded-lg shadow-2xl bg-gray-100 min-h-screen'>
+    <div className='p-6  rounded-lg shadow-2xl bg-gray-100  '>
       {/* Welcome Section */}
-      <div className='flex justify-between md:items-center md:flex-row flex-col md:gap-10'>
+      <div className='flex justify-between lg:items-center lg:flex-row flex-col lg:gap-10'>
         <div className='mb-8'>
           <h2 className='text-3xl font-bold text-gray-800'>
             Welcome, {auth?.name || 'User'}!
@@ -52,10 +48,10 @@ const DashboardHome = () => {
             Manage your account and transactions seamlessly.
           </p>
         </div>{' '}
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-6  mb-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6  mb-8'>
           {/* ZephID */}
 
-          <div className='bg-indigo-500 text-white rounded-lg p-3 flex items-center'>
+          <div className='bg-indigo-500 shadow-lg text-white rounded-lg p-3 flex items-center'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -98,7 +94,7 @@ const DashboardHome = () => {
           </div>
           {/* ZephLink */}
 
-          <div className='bg-red-500 text-white rounded-lg p-3 flex items-center'>
+          <div className='bg-red-500 shadow-lg text-white rounded-lg p-3 flex items-center'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -150,9 +146,9 @@ const DashboardHome = () => {
         </div>
       </div>
       {/* Wallet Overview */}
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
+      <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8'>
         {/* USD Wallet */}
-        <div className='bg-white rounded-lg shadow-md p-4'>
+        {/* <div className='bg-white rounded-lg shadow-md p-4'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center'>
               <svg
@@ -178,11 +174,12 @@ const DashboardHome = () => {
             </div>
             <span className='  text-xs font-semibold px-2.5 py-0.5'>
               <button className='bg-[#2774cb] text-white border border-[#2774cb] hover:text-[#2774cb] hover:bg-white rounded-lg px-4 py-2 font-bold'>
-                Manage
+                Fund
               </button>
             </span>
           </div>
-        </div>
+        </div> */}
+        <UsdWallet />
 
         {/* Euro wallet */}
         <div className='bg-white rounded-lg shadow-md p-4'>
@@ -239,126 +236,18 @@ const DashboardHome = () => {
           </div>
         </div>
       </div>{' '}
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6  mb-8'>
-        {/* Fund Transfer Section */}
-        <div className='bg-green-500 text-white rounded-lg p-3 flex items-center'>
-          <h3 className='text-xl font-bold flex-1'>Fund Transfer</h3>
-          <button className='bg-white text-green-500 rounded-lg px-4 py-2 font-bold'>
-            Send Money
-          </button>
+      <div className='grid grid-cols-1 lg:grid-cols-12 gap-6  mb-8'>
+        <div className=' col-span-8'>
+          <TransactionTable />
         </div>
-        {/* USDC Wallet Section */}
-        <div className='bg-blue-500 text-white rounded-lg p-3 flex items-center'>
-          <div className='flex-1'>
-            <div className='flex items-center'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='h-10 w-10 text-white mr-2'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
-                />
-              </svg>
-              <div>
-                <h3 className='text-xl font-bold'>USDC Wallet</h3>
-                <p className='text-lg'>Balance: $1000</p>
-              </div>
-            </div>
-          </div>
-          <button className='bg-white text-blue-500 rounded-lg px-4 py-2 font-bold'>
-            Manage
-          </button>
+        <div className='c col-span-8 lg:col-span-4'>
+          <ZephQrCode />
+          <div className=' bg-white rounded-lg mt-8 shadow-md p-6'>lol</div>
         </div>
       </div>
-      <div className='mb-8'>
-        <div className='bg-white rounded-lg shadow p-6 flex flex-col items-center'>
-          <h3 className='text-lg font-semibold text-gray-700 mb-4'>
-            ZephCode QR
-          </h3>
-          <QRCode
-            value={zephLink}
-            size={200}
-            bgColor='#ffffff'
-            fgColor='#6366F1'
-            level='H'
-            includeMargin={true}
-          />
-          <p className='mt-4 text-gray-600 text-center'>
-            Scan this QR code to make a payment to your ZephID.
-          </p>
-        </div>
+      <div className='  bg-white rounded-lg shadow-md p-6'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'></div>
       </div>
-      {/* <div className='bg-gray-100 min-h-screen p-6'>
-        <div className='max-w-7xl mx-auto bg-white rounded-lg shadow-md p-6'>
-          <h2 className='text-3xl font-semibold mb-4'>Dashboard</h2>
-          <p className='text-gray-600 mb-6'>
-            Welcome to your Payzeph dashboard! Here you can manage your
-            activities.
-          </p>
-
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-            ZephID Section
-            <div className='bg-indigo-500 text-white rounded-lg p-4 flex items-center'>
-              <div className='flex-1'>
-                <h3 className='text-xl font-bold'>Your ZephID</h3>
-                <p className='text-lg'>Z5647-745</p>
-              </div>
-            </div>
-
-            USDC Wallet Section
-            <div className='bg-green-500 text-white rounded-lg p-4 flex items-center'>
-              <div className='flex-1'>
-                <h3 className='text-xl font-bold'>USDC Wallet</h3>
-                <p className='text-lg'>Balance: $1000</p>
-              </div>
-              <button className='bg-white text-green-500 rounded-lg px-4 py-2 font-bold'>
-                Manage
-              </button>
-            </div>
-
-            EURC Wallet Section
-            <div className='bg-yellow-500 text-white rounded-lg p-4 flex items-center'>
-              <div className='flex-1'>
-                <h3 className='text-xl font-bold'>EURC Wallet</h3>
-                <p className='text-lg'>Coming Soon</p>
-              </div>
-            </div>
-
-            Fund Transfer Section
-            <div className='bg-blue-500 text-white rounded-lg p-4 flex items-center'>
-              <h3 className='text-xl font-bold flex-1'>Fund Transfer</h3>
-              <button className='bg-white text-blue-500 rounded-lg px-4 py-2 font-bold'>
-                Send Money
-              </button>
-            </div>
-
-            QR Code Section
-            <div className='bg-purple-500 text-white rounded-lg p-4 flex items-center'>
-              <div className='flex-1'>
-                <h3 className='text-xl font-bold'>Your ZephCode</h3>
-                Placeholder for QR code
-                <div className='bg-white h-24 w-24 flex items-center justify-center rounded-lg shadow-md'>
-                  <p>QR Code Here</p>
-                </div>
-              </div>
-            </div>
-
-            ZephLink Section
-            <div className='bg-red-500 text-white rounded-lg p-4 flex items-center'>
-              <div className='flex-1'>
-                <h3 className='text-xl font-bold'>Your ZephLink</h3>
-                <p className='text-lg'>payzeph.com/Z5647-745</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };
