@@ -204,7 +204,7 @@ const DashboardHome = () => {
                 <h4 className='text-lg font-semibold text-gray-700'>
                   Euro Wallet
                 </h4>
-                <p className='text-sm text-gray-500'>Balance: €1000</p>
+                <p className='text-sm text-gray-500'>Balance: €0</p>
               </div>
             </div>
             <span className='  text-xs font-semibold px-2.5 py-0.5'>
