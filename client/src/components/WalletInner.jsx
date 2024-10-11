@@ -1,4 +1,3 @@
-// import QRCode from 'qrcode.react';
 import { useState, Fragment } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import {
@@ -19,7 +18,6 @@ const WalletInner = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
-  const zephID = 'Z5647-745';
   const usdcWallet = {
     currency: 'USDC',
     balance: 1000,
@@ -34,7 +32,6 @@ const WalletInner = () => {
     { name: 'USD', active: true },
     { name: 'EUR', active: false },
     { name: 'GBP', active: false },
-    // Add more as needed
   ];
   return (
     <div className='p-6 rounded-lg text-gray-800 shadow-2xl bg-gray-100 min-h-screen'>
@@ -389,7 +386,6 @@ const WalletInner = () => {
                           </div>
                         </div>
 
-                        {/* Optional: Add additional content or links here */}
                         <div className='mt-4'>
                           <button
                             type='button'
@@ -408,7 +404,6 @@ const WalletInner = () => {
           </>
         </div>
       </div>
-      {/* Add more dashboard widgets and information here */}
     </div>
   );
 };

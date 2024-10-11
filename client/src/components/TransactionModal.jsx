@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-
 import {
   Dialog,
   DialogPanel,
@@ -110,7 +109,6 @@ const TransactionModal = ({ transaction, isOpen, closeModal }) => {
                               {transaction.details.notes}
                             </td>
                           </tr>
-                          {/* Add more details as needed */}
                         </tbody>
                       </table>
                     </div>

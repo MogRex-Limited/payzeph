@@ -1,14 +1,12 @@
-// src/pages/Dashboard/DashboardHome.js
-
 import { useContext, useEffect } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useState } from 'react';
-import AuthContext from '../../../context/AuthProvider';
+import AuthContext from '../context/AuthProvider';
 import { toast } from 'sonner';
-import { naira } from '../../../assets';
-import ZephQrCode from '../../../components/ZephQrCode';
-import TransactionTable from '../../../components/TransactionTable';
-import UsdWallet from '../../../components/USDWallet';
+import { naira } from '../assets';
+import ZephQrCode from './ZephQrCode';
+import TransactionTable from './TransactionTable';
+import UsdWallet from './USDWallet';
 
 const DashboardHome = () => {
   const { auth } = useContext(AuthContext);
@@ -16,7 +14,7 @@ const DashboardHome = () => {
   const [copied2, setCopied2] = useState(false);
 
   const zephID = auth?.zephID || 'Z5647-745';
-  const zephLink = `https://payzeph.com/${zephID}`;
+  const zephLink = `https://PayZeph.com/${zephID}`;
 
   const handleCopy = () => {
     setCopied(true);
@@ -68,7 +66,6 @@ const DashboardHome = () => {
             </svg>
             <div className='flex-1'>
               <h3 className='text-xl font-bold'>Your ZephID</h3>
-              {/* <p className='text-lg'>Z5647-745</p> */}
               <div className='flex items-center'>
                 <span className='text-gray-200 font-mono'>{zephID}</span>
                 <CopyToClipboard text={zephID} onCopy={handleCopy}>
@@ -111,7 +108,6 @@ const DashboardHome = () => {
             </svg>
             <div className='flex-1'>
               <h3 className='text-xl font-bold p-0 m-0'>Your ZephLink</h3>
-              {/* <p className='text-lg'>Z5647-745</p> */}
               <div className='flex items-center'>
                 <a
                   href={zephLink}
@@ -119,7 +115,6 @@ const DashboardHome = () => {
                   rel='noopener noreferrer'
                   className='text-gray-200 p-0 m-0 font-mono text-[11px] hover:underline'
                 >
-                  {/* {zephLink.slice(0, 20)} */}
                   {zephLink}
                 </a>
                 <CopyToClipboard text={zephLink} onCopy={handleCopy2}>

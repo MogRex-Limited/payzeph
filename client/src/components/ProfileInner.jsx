@@ -1,49 +1,16 @@
-// src/pages/Dashboard/DashboardHome.js
-
 import { useContext, useState } from 'react';
-import AuthContext from '../../../context/AuthProvider';
-import QRCode from 'react-qr-code';
-import ZephQrCode from '../../../components/ZephQrCode';
+import AuthContext from '../context/AuthProvider';
+import ZephQrCode from './ZephQrCode';
 
 const ProfileInner = () => {
   const { auth } = useContext(AuthContext);
-  const [personalInfo, setPersonalInfo] = useState({
+  const [personalInfo] = useState({
     name: auth?.name || '',
     email: auth?.email || '',
     zephID: auth?.zephID || 'zddfdf',
     zephLink: auth?.zephLink || 'dfreedfr',
     zephCode: auth?.zephCode || 'e54dftr',
   });
-  const [passwordInfo, setPasswordInfo] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-    twoFA: false,
-  });
-
-  const handlePersonalInfoChange = (e) => {
-    setPersonalInfo({ ...personalInfo, [e.target.name]: e.target.value });
-  };
-
-  const handlePasswordInfoChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setPasswordInfo({
-      ...passwordInfo,
-      [name]: type === 'checkbox' ? checked : value,
-    });
-  };
-
-  const handlePersonalInfoSubmit = (e) => {
-    e.preventDefault();
-    // Implement personal info update logic
-    console.log('Personal Info Updated:', personalInfo);
-  };
-
-  const handlePasswordInfoSubmit = (e) => {
-    e.preventDefault();
-    // Implement password update logic with 2FA
-    console.log('Password Info Updated:', passwordInfo);
-  };
 
   return (
     <div className='p-6 rounded-lg text-gray-800 shadow-xl bg-gray-100  '>

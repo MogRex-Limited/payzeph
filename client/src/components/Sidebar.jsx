@@ -1,9 +1,7 @@
-// src/components/Sidebar.js
-
 import { Link, useLocation } from 'react-router-dom';
 import {} from '@heroicons/react/24/outline';
 import { useContext, useState } from 'react';
-import { Logo2 } from '../assets';
+// import { Logo2 } from '../assets';
 import AuthContext from '../context/AuthProvider';
 
 const Sidebar = () => {
@@ -121,7 +119,7 @@ const Sidebar = () => {
       >
         <div className='h-16 flex items-center justimfy-center bbg-indigo-900'>
           <div className='flex items-center ml-3'>
-            <img src={Logo2} alt='' className='w-12 h-12 mt-1' />{' '}
+            {/* <img src={Logo2} alt='' className='w-12 h-12 mt-1' />{' '} */}
             <h1 className='text-2xl font-bold'>PayZeph</h1>
           </div>
           {/* Close button for mobile */}
