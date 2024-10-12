@@ -59,7 +59,7 @@ class WalletController extends Controller
         } catch (WalletException $e) {
             return ApiHelper::problemResponse($e->getMessage(), ApiConstants::BAD_REQ_ERR_CODE);
         } catch (\Exception $e) {
-            return ApiHelper::problemResponse($e->getMessage(), ApiConstants::SERVER_ERR_CODE);
+            return ApiHelper::problemResponse($this->serverErrorMessage, ApiConstants::SERVER_ERR_CODE, $e);
         }
     }
 
@@ -73,7 +73,7 @@ class WalletController extends Controller
         } catch (WalletException $e) {
             return ApiHelper::problemResponse($e->getMessage(), ApiConstants::BAD_REQ_ERR_CODE);
         } catch (\Exception $e) {
-            return ApiHelper::problemResponse($e->getMessage(), ApiConstants::SERVER_ERR_CODE, $e);
+            return ApiHelper::problemResponse($this->serverErrorMessage, ApiConstants::SERVER_ERR_CODE, $e);
         }
     }
 }

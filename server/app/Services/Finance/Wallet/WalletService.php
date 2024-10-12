@@ -255,6 +255,15 @@ class WalletService
             $data["number"] = generateRandomDigits(10);
             $data["user_id"] ??= auth()->id();
 
+            $wallet = Wallet::where([
+                "user_id" => $data["user_id"],
+                "currency_id" => $data["currency_id"],
+            ])->first();
+            
+            if ($wallet) {
+                return $wallet;
+            }
+
             // if ($data["type"] == CurrencyConstants::TOKEN_GROUP) {
             //     $wallet_set =  $this->circle_wallet_service
             //         ->fetchWallelSet();
