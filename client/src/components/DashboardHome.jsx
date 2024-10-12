@@ -13,8 +13,8 @@ const DashboardHome = () => {
   const [copied, setCopied] = useState(false);
   const [copied2, setCopied2] = useState(false);
 
-  const zephID = auth?.zephID || 'Z5647-745';
-  const zephLink = `https://PayZeph.com/${zephID}`;
+  const zephID = auth?.zeph_id;
+  const zephLink = `https://payzeph.com/${zephID}`;
 
   const handleCopy = () => {
     setCopied(true);
@@ -40,7 +40,7 @@ const DashboardHome = () => {
       <div className='flex justify-between lg:items-start xl:items-center lg:flex-row flex-col lg:gap-10'>
         <div className='mb-8'>
           <h2 className='text-3xl font-bold text-gray-800'>
-            Welcome, {auth?.name || 'User'}!
+            Welcome, {auth?.first_name || 'User'}!
           </h2>
           <p className='text-gray-600'>
             Manage your account and transactions seamlessly.

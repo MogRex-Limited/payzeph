@@ -11,7 +11,7 @@ const TwoFA = () => {
   const navigate = useNavigate();
   const [img, setImg] = useState();
   const [isGenerated, setGenerated] = useState();
-  const { setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
 
   const handleChange = (index, value) => {
     if (value.length <= 1) {
@@ -26,6 +26,7 @@ const TwoFA = () => {
   };
 
   const token = sessionStorage.getItem('zeph_token');
+  const hasenabled2fa = sessionStorage.getItem('zeph_2fa');
 
   const generateSecret = async () => {
     const loadingToastId = toast.loading('Generating secret...');
@@ -51,6 +52,8 @@ const TwoFA = () => {
     }
   };
 
+  const getRandomSingleDigit = Math.floor(Math.random() * 10);
+
   const handleSubmit = async () => {
     const otpString = otp.join('');
 
@@ -68,19 +71,28 @@ const TwoFA = () => {
         if (res.response.code === 200) {
           setSending(false);
           toast.dismiss(loadingToastId);
-          sessionStorage.removeItem('zeph_token');
           toast.success('OTP verified.');
           setOtp(['', '', '', '', '', '']);
-          console.log(res.response);
-          // navigate('/dashboard');
+          console.log(res.response.data);
+          setAuth({
+            ...res.response.data,
+            token: token,
+            success: true,
+            avatar2: `https://i.pravatar.cc/150?img=${getRandomSingleDigit}`,
+          });
+          setTimeout(() => {
+            sessionStorage.removeItem('zeph_token');
+            sessionStorage.removeItem('zeph_2fa');
+          }, 2000);
+          navigate('/dashboard');
         }
       } catch (error) {
         setSending(false);
         toast.dismiss(loadingToastId);
-        if (error.message) {
+        if (error.message & !error.response.data.response.message) {
           toast.error(error.message);
         } else {
-          toast.error(error.response?.data?.response.message);
+          toast.error(error.response.data.response.message);
         }
       }
     } else {
@@ -98,27 +110,61 @@ const TwoFA = () => {
       >
         <h1 className='text-3xl font-bold mb-6'>Two-Factor Authentication</h1>
         <p className='mb-8 text-center'>
-          Please scan the qr code with your Authenticator and enter code to
-          login.
+          {hasenabled2fa === '1'
+            ? 'Please enter code from your Authenticator to login.'
+            : 'Please scan the qr code with your Authenticator and enter code to login.'}
         </p>
 
-        {!isGenerated && (
-          <button
-            disabled={sending}
-            onClick={generateSecret}
-            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200'
-          >
-            Generate secret
-          </button>
+        {hasenabled2fa === '0' && (
+          <>
+            {!isGenerated && (
+              <button
+                disabled={sending}
+                onClick={generateSecret}
+                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200'
+              >
+                Generate secret
+              </button>
+            )}
+
+            {img && (
+              <div className='bg-white p-3 mb-10 rounded-lg shadow-md'>
+                <img src={img} />
+              </div>
+            )}
+
+            {isGenerated && (
+              <>
+                <div className='flex space-x-6 my-2'>
+                  {otp.map((digit, index) => (
+                    <input
+                      key={index}
+                      id={`otp-input-${index}`}
+                      type='text'
+                      maxLength='1'
+                      disabled={sending}
+                      value={digit}
+                      onChange={(e) => handleChange(index, e.target.value)}
+                      className='w-12 h-12 text-center text-2xl text-gray-900 bg-blue-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600'
+                    />
+                  ))}
+                </div>
+                <button
+                  disabled={sending}
+                  onClick={handleSubmit}
+                  className='bg-blue-500 mt-4 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200'
+                >
+                  Sumbit
+                </button>
+              </>
+            )}
+          </>
         )}
 
-        {img && (
+        {hasenabled2fa === '1' && (
           <>
             {' '}
-            <div className='bg-white p-3 rounded-lg shadow-md'>
-              <img src={img} />
-            </div>
-            <div className='flex space-x-6 mt-10 my-2'>
+            <div className='flex space-x-6 my-2'>
               {otp.map((digit, index) => (
                 <input
                   key={index}
