@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-
+import Favicon from '../../../assets/Favicon ROUND 3.png';
 import { motion } from 'framer-motion';
 
 const Home = () => {
@@ -9,10 +9,11 @@ const Home = () => {
       <section
         className='bg-cover  bg-no-repeat bg-center '
         style={{
-          backgroundImage: `url(https://i.ibb.co/L5q8SJ9/PayZeph2.png`,
+          backgroundImage: `url(${Favicon})`,
+          // backgroundImage: `url(https://i.ibb.co/L5q8SJ9/PayZeph2.png`,
         }}
       >
-        <div className='bg-[#071847] bg-opacity-85 min-h-screen flex flex-col justify-center items-center text-center px-4 pt-20'>
+        <div className='bg-[#071847] bg-opacity-95 min-h-screen flex flex-col justify-center items-center text-center px-4 pt-20'>
           <motion.h1
             className='text-5xl md:text-7xl font-bold mb-4 '
             initial={{ opacity: 0, y: -50 }}

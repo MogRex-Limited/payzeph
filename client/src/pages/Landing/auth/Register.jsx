@@ -36,7 +36,7 @@ const Register = () => {
     if (!formData.phone_number) {
       newErrors.phone_number = 'Phone number is required';
     } else if (!/^\d{11}$/.test(formData.phone_number)) {
-      newErrors.phone_number = 'Phone number is invalid';
+      newErrors.phone_number = 'Phone number must be 11 digits';
     }
     if (!formData.password) {
       newErrors.password = 'Password is required';
@@ -66,7 +66,6 @@ const Register = () => {
           setSending(false);
           toast.dismiss(loadingToastId);
           toast.success('Account created');
-          console.log('Form Submitted', formData);
           setFormData({
             first_name: '',
             last_name: '',
@@ -86,7 +85,7 @@ const Register = () => {
             .map((field) => errorData[field].join(', '))
             .join(' ');
           toast.error(errorMessages);
-        } else if (error.message) {
+        } else if (error.message & !error.response.data.response.message) {
           toast.error(error.message);
         } else {
           toast.error(error.response.data.response.message);

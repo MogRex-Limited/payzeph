@@ -41,7 +41,7 @@ const PrivateRoute = () => {
       name: 'John Doe',
       email: 'john.doe@example.com',
       avatar: 'https://example.com/avatar.jpg',
-      avatar2: 'https://i.pravatar.cc/150?img=3',
+      avatar2: 'https://i.pravatar.cc/150?img=2 ',
     });
   }, []);
   // const isAuthenticated = Boolean(localStorage.getItem('authToken')); // Replace with your auth logic
