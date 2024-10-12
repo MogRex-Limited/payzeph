@@ -54,7 +54,7 @@ Route::middleware(["apiKey"])->group(function () {
             Route::prefix("wallets")->as("wallets.")->group(function () {
                 Route::get("/", [WalletController::class, "index"]);
                 Route::get("{wallet}/show", [WalletController::class, "show"]);
-                Route::post("create", [WalletController::class, "create"]);
+                Route::post("fund-wallet", [WalletController::class, "fund"]);
             });
 
             Route::prefix("currencies")->as("currencies.")->group(function () {
