@@ -90,9 +90,9 @@ class WalletService
 
             $this->validate($data);
 
-            $wallet = $this->wallet();
+            $wallet = $this->wallet ?? $this->wallet();
             $old_wallet_balance = TransactionService::oldWalletBalance($wallet);
-            
+
             if (!empty($this->transaction_data)) {
                 $this->transaction = (new TransactionService)->create(array_merge([
                     'user_id' => $this->user?->id,
@@ -114,7 +114,7 @@ class WalletService
             ]);
 
             $new_wallet_balance = TransactionService::newWalletBalance($wallet->refresh());
-            
+
             $this->transaction->update([
                 "current_balance" => $new_wallet_balance["balance"],
             ]);
@@ -134,7 +134,7 @@ class WalletService
 
             $this->validate($data);
 
-            $wallet = $this->wallet();
+            $wallet = $this->wallet ?? $this->wallet();
 
             $new_balance = $wallet->balance - $amount;
 
@@ -165,7 +165,7 @@ class WalletService
             ]);
 
             $new_wallet_balance = TransactionService::newWalletBalance($wallet->refresh());
-            
+
             $this->transaction->update([
                 "current_balance" => $new_wallet_balance["balance"],
             ]);
@@ -212,7 +212,9 @@ class WalletService
         ]);
 
         if ($type != "all") {
-            $wallets = $wallets->whereNot("type", CurrencyConstants::USDC_TOKEN);
+            $wallets = $wallets->whereHas("currency", function ($currency) {
+                $currency->whereNot("type", CurrencyConstants::USDC_TOKEN);
+            });
         }
 
         return $wallets;
@@ -254,6 +256,15 @@ class WalletService
             $data =  $validator->validated();
             $data["number"] = generateRandomDigits(10);
             $data["user_id"] ??= auth()->id();
+
+            $wallet = Wallet::where([
+                "user_id" => $data["user_id"],
+                "currency_id" => $data["currency_id"],
+            ])->first();
+
+            if ($wallet) {
+                return $wallet;
+            }
 
             // if ($data["type"] == CurrencyConstants::TOKEN_GROUP) {
             //     $wallet_set =  $this->circle_wallet_service

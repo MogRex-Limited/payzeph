@@ -38,6 +38,11 @@ class Transaction extends Model
         });
     }
 
+    public function formattedAmount($key = "amount", $currency_symbol = null)
+    {
+        return format_money($this->$key, 2, $currency_symbol ?? $this->currency->symbol);
+    }
+
     public function payment()
     {
         return $this->hasOne(Payment::class, "transaction_id");

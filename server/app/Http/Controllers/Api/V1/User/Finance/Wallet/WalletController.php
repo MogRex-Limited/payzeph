@@ -8,6 +8,7 @@ use App\Exceptions\General\ModelNotFoundException;
 use App\Helpers\ApiHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Finance\Wallet\WalletResource;
+use App\Services\Finance\Wallet\FundWalletService;
 use App\Services\Finance\Wallet\WalletService;
 use Exception;
 use Illuminate\Http\Request;
@@ -57,24 +58,22 @@ class WalletController extends Controller
             return ApiHelper::inputErrorResponse("The given data is invalid", ApiConstants::VALIDATION_ERR_CODE, $e);
         } catch (WalletException $e) {
             return ApiHelper::problemResponse($e->getMessage(), ApiConstants::BAD_REQ_ERR_CODE);
-        } catch (\Throwable $e) {
-            return ApiHelper::problemResponse($e->getMessage(), ApiConstants::SERVER_ERR_CODE);
+        } catch (\Exception $e) {
+            return ApiHelper::problemResponse($this->serverErrorMessage, ApiConstants::SERVER_ERR_CODE, $e);
         }
     }
 
     public function fund(Request $request)
     {
         try {
-            $user = auth()->user();
-            $wallet = $this->wallet_service->create($request->all(), $user);
-            $data = WalletResource::make($wallet);
-            return ApiHelper::validResponse("Wallet created successfully", $data);
+            $wallet = (new FundWalletService)->fund($request->all());
+            return ApiHelper::validResponse("Wallet funded successfully");
         } catch (ValidationException $e) {
             return ApiHelper::inputErrorResponse("The given data is invalid", ApiConstants::VALIDATION_ERR_CODE, $e);
         } catch (WalletException $e) {
             return ApiHelper::problemResponse($e->getMessage(), ApiConstants::BAD_REQ_ERR_CODE);
-        } catch (\Throwable $e) {
-            return ApiHelper::problemResponse($e->getMessage(), ApiConstants::SERVER_ERR_CODE);
+        } catch (\Exception $e) {
+            return ApiHelper::problemResponse($this->serverErrorMessage, ApiConstants::SERVER_ERR_CODE, $e);
         }
     }
 }

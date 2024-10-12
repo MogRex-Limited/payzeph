@@ -22,6 +22,7 @@ class CreateHookLogsTable extends Migration
             $table->json("headers")->nullable();
             $table->json("content")->nullable();
             $table->string("url");
+            $table->string("sender_name")->nullable();
             $table->integer("delay")->nullable()->default(0); //seconds
             $table->integer("retries")->nullable()->default(0);
             $table->dateTime("processed_at")->nullable();

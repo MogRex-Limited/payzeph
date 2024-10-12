@@ -57,6 +57,14 @@ class CurrencyTableSeeder extends Seeder
                 "symbol" => "USDC",
                 "status" => StatusConstants::ACTIVE
             ],
+            [
+                "name" => "Thai baht",
+                "group" => CurrencyConstants::FIAT_GROUP,
+                "type" => CurrencyConstants::THAI_BAHT_CURRENCY,
+                "short_name" => "THB",
+                "symbol" => "฿",
+                "status" => StatusConstants::ACTIVE
+            ],
         ];
 
         foreach ($currencies as $currency) {
