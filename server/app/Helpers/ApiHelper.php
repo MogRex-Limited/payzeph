@@ -82,6 +82,64 @@ class ApiHelper
         return $getUser ? auth("api")->user() : auth("api");
     }
 
+    static function validData(string $message = null, $data = null, $terminus = null)
+    {
+        if (is_null($data) || empty($data)) {
+            $data = [];
+        }
+
+        $body = [
+            'terminus' => $terminus,
+            'status' => "OK",
+            'response' => [
+                'code' => ApiConstants::GOOD_REQ_CODE,
+                'title' => "Operation successful",
+                'message' => $message,
+                'data' => $data,
+            ]
+        ];
+
+        return $body;
+    }
+
+    static function problemData(string $message = null, int $status_code, Exception $trace = null, $terminus = null)
+    {
+        $code = !empty($status_code) ? $status_code : null;
+        $traceMsg = empty($trace) ?  null  : $trace->getMessage();
+
+        $body = [
+            'terminus' => $terminus,
+            'status' => "F9",
+            'response' => [
+                'title' => "Operation failed",
+                'message' => $message,
+                'code' => $code,
+                "error_debug" => $traceMsg,
+                "error_trace" => optional($trace)->getTrace()
+            ]
+        ];
+
+        return $body;
+    }
+
+    static function inputErrorData(string $message = null, int $status_code = null, ValidationException $trace = null, $terminus = null)
+    {
+        $code = ($status_code != null) ? $status_code : '';
+
+        $body = [
+            'terminus' => $terminus,
+            'status' => "F9",
+            'response' => [
+                'title' => "Operation failed",
+                'message' => $message,
+                'code' => $code,
+                'errors' => empty($trace) ?  null  : $trace->errors(),
+            ]
+        ];
+
+        return $body;
+    }
+
     static function collectPagination(LengthAwarePaginator $pagination, $appendQuery = true)
     {
         $request = request();
