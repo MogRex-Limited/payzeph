@@ -92,7 +92,7 @@ class WalletService
 
             $wallet = $this->wallet ?? $this->wallet();
             $old_wallet_balance = TransactionService::oldWalletBalance($wallet);
-            
+
             if (!empty($this->transaction_data)) {
                 $this->transaction = (new TransactionService)->create(array_merge([
                     'user_id' => $this->user?->id,
@@ -114,7 +114,7 @@ class WalletService
             ]);
 
             $new_wallet_balance = TransactionService::newWalletBalance($wallet->refresh());
-            
+
             $this->transaction->update([
                 "current_balance" => $new_wallet_balance["balance"],
             ]);
@@ -165,7 +165,7 @@ class WalletService
             ]);
 
             $new_wallet_balance = TransactionService::newWalletBalance($wallet->refresh());
-            
+
             $this->transaction->update([
                 "current_balance" => $new_wallet_balance["balance"],
             ]);
@@ -211,8 +211,10 @@ class WalletService
             'user_id' => $this->user?->id,
         ]);
 
-        if (empty($type)) {
-            $wallets = $wallets->whereNot("type", CurrencyConstants::USDC_TOKEN);
+        if ($type != "all") {
+            $wallets = $wallets->whereHas("currency", function ($currency) {
+                $currency->whereNot("type", CurrencyConstants::USDC_TOKEN);
+            });
         }
 
         return $wallets;
@@ -259,7 +261,7 @@ class WalletService
                 "user_id" => $data["user_id"],
                 "currency_id" => $data["currency_id"],
             ])->first();
-            
+
             if ($wallet) {
                 return $wallet;
             }
