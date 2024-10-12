@@ -212,29 +212,6 @@ const Sidebar = () => {
       )}
     </>
   );
-  // return (
-  //   <div className='h-screen fixmed top-0 z-50  w-64 bg-gradient-to-bl from-web3Bright-100 via-web3Bright-200 to-web3Bright-300   text-white flex flex-col'>
-  //     <div className='h-16 flex items-center justify-center bmg-indigo-900'>
-  //       <h1 className='text-2xl font-bold'>PayZeph</h1>
-  //     </div>
-  //     <nav className='flex-1 px-2 py-4 space-y-2'>
-  //       {menuItems.map((item) => (
-  //         <Link
-  //           key={item.name}
-  //           to={item.path}
-  //           className={`flex items-center p-2 text-base font-medium rounded-md hover:bg-indigo-700 transition ${
-  //             location.pathname === item.path
-  //               ? 'b,g-indigo-700 bg-gradient-to-bl from-web3Bright-300   to-web3Bright-300'
-  //               : ''
-  //           }`}
-  //         >
-  //           {item.icon}
-  //           <span className='ml-3'>{item.name}</span>
-  //         </Link>
-  //       ))}
-  //     </nav>
-  //   </div>
-  // );
 };
 
 export default Sidebar;

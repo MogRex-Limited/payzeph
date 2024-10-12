@@ -46,16 +46,16 @@ const Login = () => {
       try {
         const res = await AuthFxns.loginUser(formData);
         if (res.response.code === 200) {
-          console.log(res.response.data.token);
           sessionStorage.setItem('zeph_token', res.response.data.token);
           setSending(false);
+          console.log(res.response.data.user);
           toast.dismiss(loadingToastId);
-          setFormData({
-            email: '',
-            password: '',
-          });
-          setErrors({});
-          navigate('/two-factor');
+          // setFormData({
+          //   email: '',
+          //   password: '',
+          // });
+          // setErrors({});
+          // navigate('/two-factor');
         }
       } catch (error) {
         setSending(false);

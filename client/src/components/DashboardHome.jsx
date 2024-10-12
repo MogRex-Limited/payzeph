@@ -3,10 +3,10 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useState } from 'react';
 import AuthContext from '../context/AuthProvider';
 import { toast } from 'sonner';
-import { naira } from '../assets';
 import ZephQrCode from './ZephQrCode';
 import TransactionTable from './TransactionTable';
 import UsdWallet from './USDWallet';
+import NairaWallet from './NairaWallet';
 
 const DashboardHome = () => {
   const { auth } = useContext(AuthContext);
@@ -181,25 +181,8 @@ const DashboardHome = () => {
         </div>
 
         {/* Naira wallet */}
-        <div className='bg-white rounded-lg shadow-md p-4'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center'>
-              <img src={naira} alt='' className='h-7 w-7 text-[#25b471] mr-2' />
 
-              <div>
-                <h4 className='text-lg font-semibold text-gray-700'>
-                  Naira Wallet
-                </h4>
-                <p className='text-sm text-gray-500'>Balance: ₦1000</p>
-              </div>
-            </div>
-            <span className='  text-xs font-semibold px-2.5 py-0.5'>
-              <button className='bg-[#25b471] text-white border border-[#25b471] hover:text-[#25b471] hover:bg-white rounded-lg px-4 py-2 font-bold'>
-                Activate
-              </button>
-            </span>
-          </div>
-        </div>
+        <NairaWallet />
       </div>{' '}
       <div className='grid grid-cols-1 xl:grid-cols-12 gap-6  mb-6'>
         <div className=' col-span-8'>
@@ -271,9 +254,9 @@ const DashboardHome = () => {
           </div>
         </div>
       </div>
-      <div className='  bg-white rounded-lg shadow-md p-6'>
+      {/* <div className='  bg-white rounded-lg shadow-md p-6'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'></div>
-      </div>
+      </div> */}
     </div>
   );
 };

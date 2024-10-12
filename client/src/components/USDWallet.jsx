@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   Dialog,
   DialogPanel,
+  DialogTitle,
   Transition,
   TransitionChild,
 } from '@headlessui/react';
@@ -61,7 +62,6 @@ const UsdWallet = () => {
       }, 2000);
     }, 5000);
   };
-  console.log(fundCurrency);
 
   return (
     <>
@@ -146,12 +146,12 @@ const UsdWallet = () => {
                   <div>
                     {!isProcessing && !isSuccess && (
                       <>
-                        <Dialog.Title
+                        <DialogTitle
                           as='h3'
                           className='text-lg leading-6 font-medium text-white mb-4'
                         >
                           Fund Your USD Wallet
-                        </Dialog.Title>
+                        </DialogTitle>
                         <form onSubmit={handleFundSubmit} className='space-y-4'>
                           <div>
                             <label

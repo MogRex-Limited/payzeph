@@ -71,8 +71,8 @@ const TwoFA = () => {
           sessionStorage.removeItem('zeph_token');
           toast.success('OTP verified.');
           setOtp(['', '', '', '', '', '']);
-
-          navigate('/dashboard');
+          console.log(res.response);
+          // navigate('/dashboard');
         }
       } catch (error) {
         setSending(false);
@@ -115,7 +115,10 @@ const TwoFA = () => {
         {img && (
           <>
             {' '}
-            <div className='flex space-x-8 mb-6'>
+            <div className='bg-white p-3 rounded-lg shadow-md'>
+              <img src={img} />
+            </div>
+            <div className='flex space-x-6 mt-10 my-2'>
               {otp.map((digit, index) => (
                 <input
                   key={index}
@@ -129,13 +132,10 @@ const TwoFA = () => {
                 />
               ))}
             </div>
-            <div className='bg-white p-3 rounded-lg shadow-md'>
-              <img src={img} />
-            </div>
             <button
               disabled={sending}
               onClick={handleSubmit}
-              className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200'
+              className='bg-blue-500 mt-4 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200'
             >
               Sumbit
             </button>

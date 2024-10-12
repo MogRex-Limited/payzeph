@@ -45,10 +45,10 @@ const OTPVerificationPage = () => {
       } catch (error) {
         setSending(false);
         toast.dismiss(loadingToastId);
-        if (error.message) {
+        if (error.message & !error.response.data.response.message) {
           toast.error(error.message);
         } else {
-          toast.error(error.response?.data?.response.message);
+          toast.error(error.response.data.response.message);
         }
       }
     } else {

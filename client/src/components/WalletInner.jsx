@@ -3,10 +3,12 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import {
   Dialog,
   DialogPanel,
+  DialogTitle,
   Transition,
   TransitionChild,
 } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import BrowseCurrenciesButton from './BrowseCurrencies';
 
 const WalletInner = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +21,7 @@ const WalletInner = () => {
     setIsOpen(false);
   };
   const usdcWallet = {
-    currency: 'USDC',
+    currency: 'USD',
     balance: 1000,
     address: '0x1234567890abcdef1234567890abcdef12345678',
   };
@@ -42,9 +44,9 @@ const WalletInner = () => {
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8'>
           {/* USDC Wallet */}
           <div className='bg-white bg-opacilty-90 backdrop-blur-md rounded-lg p-6 flex flex-col'>
-            <h3 className='text-xl font-bold text-wmhite mb-2'>USDC Wallet</h3>
+            <h3 className='text-xl font-bold text-wmhite mb-2'>USD Wallet</h3>
             <p className='text-lg text-green-400 mb-4'>
-              Balance: ${usdcWallet.balance} USDC
+              Balance: ${usdcWallet.balance} USD
             </p>
             <p className='text-gray-300 mb-4'>
               Address: {usdcWallet.address.slice(0, 20)}...
@@ -125,11 +127,11 @@ const WalletInner = () => {
           {/* EURC Wallet */}
           <div className='bg-white bg-opacitny-10 backdrop-blur-md rounded-lg p-6 flex flex-col'>
             <h3 className='text-xl font-bold text-nwhite mb-2'>EURC Wallet</h3>
-            <p className='text-lg text-yellow-400 mb-4'>
+            <p className='text-lg text-yellow-400 mb-4 '>
               Balance: ${eurcWallet.balance} EURC
             </p>
             <p className='text-gray-300 mb-4'>Address: {eurcWallet.address}</p>
-            <div className='flex items-center space-x-4 mb-4'>
+            <div className='flex items-center space-x-4 mb-4 opacity-30 pointer-events-none cursor-not-allowed'>
               <CopyToClipboard text={eurcWallet.address}>
                 <button
                   className='flex items-center space-x-1 bg-indigo-600 text-white px-3 py-2 rounded-md hover:bg-indigo-700 transition'
@@ -168,7 +170,7 @@ const WalletInner = () => {
                 />
               </svg>
             </div>
-            <div className='flex space-x-2'>
+            <div className='flex space-x-2 opacity-30 pointer-events-none cursor-not-allowed'>
               <button
                 className='flex-1 flex items-center justify-center space-x-1 bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 transition'
                 disabled
@@ -221,23 +223,8 @@ const WalletInner = () => {
               Create and manage fiat currencies. Browse available currencies and
               activate wallets to hold funds.
             </p>
-            <button className='flex items-center space-x-1 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='h-5 w-5'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z'
-                />
-              </svg>
-              <span>Browse Currencies</span>
-            </button>
+
+            <BrowseCurrenciesButton />
           </div>
         </div>
 
@@ -371,12 +358,12 @@ const WalletInner = () => {
                               />
                             </svg>
                           </div>
-                          <Dialog.Title
+                          <DialogTitle
                             as='h3'
                             className='text-lg font-medium leading-6 text-center text-white'
                           >
                             API Documentation
-                          </Dialog.Title>
+                          </DialogTitle>
                           <div className='mt-2'>
                             <p className='text-sm text-center text-gray-200'>
                               Coming Soon! Stay tuned for our comprehensive API

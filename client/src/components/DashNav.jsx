@@ -17,8 +17,8 @@ function DashNav() {
 
   return (
     <nav
-      style={{ width: 'calc(100vw - 16rem)' }}
-      className='shadow-2xl z-10 top-0 fixed w-[100vw-16rem]  w-fubll b,g-gray-800 p-4 bg-gradient-to-bl from-web3Bright-300 via-web3Bright-100 to-web3Bright-300'
+      // style={{ width: 'calc(100vw - 16rem)' }}
+      className='w-full md:w-[calc(100vw-16rem)] shadow-2xl z-10 top-0 fixed  w-fubll b,g-gray-800 p-4 bg-gradient-to-bl from-web3Bright-300 via-web3Bright-100 to-web3Bright-300'
     >
       <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
         <div className='flex justify-between items-center'>
