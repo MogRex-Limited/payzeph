@@ -83,8 +83,9 @@ class SafeHavenVirtualAccountPaymentWebhookService
         $fees = 0 ?? $this->parseFee($amount);
 
         (new WalletService)
+            ->setWallet($wallet)
             ->setUser($wallet->user)
-            ->setCurrency($wallet->currency)
+            ->setCurrency($wallet->currency_id)
             ->withTransaction([
                 "fees" => $fees,
                 "description" => "Funds received from " . $payload["data"]["debitAccountName"],

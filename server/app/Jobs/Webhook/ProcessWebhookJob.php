@@ -21,7 +21,9 @@ class ProcessWebhookJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(public $data, public $user_id) {}
+    public function __construct(public $data, public $user_id) {
+        
+    }
 
     /**
      * Execute the job.
@@ -35,8 +37,8 @@ class ProcessWebhookJob implements ShouldQueue
         }
     }
 
-    public function middleware()
-    {
-        return [(new WithoutOverlapping($this->user_id))->releaseAfter(60)];
-    }
+    // public function middleware()
+    // {
+    //     return [(new WithoutOverlapping($this->user_id))->releaseAfter(60)];
+    // }
 }

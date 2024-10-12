@@ -48,8 +48,9 @@ class NewTransactionNotification extends Notification
             ->line("Kindly see the details of the transaction:")
             ->line("Type: {$this->transaction->type}")
             ->line("Amount: {$this->transaction->formattedAmount()}")
-            ->line("Description: {$this->transaction->description}")
-            ->action("View Transaction", $this->transaction->viewUrl());
+            ->line("Description: {$this->transaction->description}");
+
+            // ->action("View Transaction", $this->transaction->viewUrl());
 
     }
 

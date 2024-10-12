@@ -90,7 +90,7 @@ class WalletService
 
             $this->validate($data);
 
-            $wallet = $this->wallet();
+            $wallet = $this->wallet ?? $this->wallet();
             $old_wallet_balance = TransactionService::oldWalletBalance($wallet);
             
             if (!empty($this->transaction_data)) {
@@ -134,7 +134,7 @@ class WalletService
 
             $this->validate($data);
 
-            $wallet = $this->wallet();
+            $wallet = $this->wallet ?? $this->wallet();
 
             $new_balance = $wallet->balance - $amount;
 
