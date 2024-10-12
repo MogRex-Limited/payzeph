@@ -211,7 +211,7 @@ class WalletService
             'user_id' => $this->user?->id,
         ]);
 
-        if ($type != "all") {
+        if (empty($type)) {
             $wallets = $wallets->whereNot("type", CurrencyConstants::USDC_TOKEN);
         }
 
