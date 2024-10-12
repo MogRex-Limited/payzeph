@@ -7,6 +7,7 @@ class PaymentConstants
     const GATEWAY_CATHOLICPAY = "CatholicPay";
     const GATEWAY_PAYSTACK = "Paystack";
     const GATEWAY_SQUAD = "Squad";
+    const GATEWAY_SAFE_HAVEN = "Safe Haven";
     const GATEWAY_FLUTTWAVE = "Flutterwave";
     const GATEWAY_STRIPE = "Stripe";
     const GATEWAY_MONNIFY = "Monnify";

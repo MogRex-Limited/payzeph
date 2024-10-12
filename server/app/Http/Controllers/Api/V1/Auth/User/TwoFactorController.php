@@ -6,6 +6,7 @@ use App\Constants\General\ApiConstants;
 use App\Exceptions\Auth\AuthException;
 use App\Helpers\ApiHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User\UserResource;
 use App\Services\Auth\TwoFactor\TwoFactorAuthService;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class TwoFactorController extends Controller
     {
         $this->two_factor_auth_service = new TwoFactorAuthService;
     }
-    
+
     public function generateSecretKey(Request $request)
     {
         try {
@@ -32,8 +33,10 @@ class TwoFactorController extends Controller
     public function enable2FA(Request $request)
     {
         try {
-            $data = $this->two_factor_auth_service->setModel(auth()->user())->enable2FA($request->all());
-            return ApiHelper::validResponse("Two factor authentication enabled successfully");
+            $user = auth()->user();
+            $this->two_factor_auth_service->setModel($user)->enable2FA($request->all());
+            $data = UserResource::make($user);
+            return ApiHelper::validResponse("Two factor authentication enabled successfully", $data);
         } catch (ValidationException $e) {
             return ApiHelper::inputErrorResponse($this->validationErrorMessage, ApiConstants::VALIDATION_ERR_CODE, $e);
         } catch (AuthException $e) {

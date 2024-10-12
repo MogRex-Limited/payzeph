@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\Finance\Pricing\PricingService;
-use App\Services\Notification\AppMailerService;
+use App\Services\Provider\Circle\CircleService;
 use Illuminate\Console\Command;
 
 class TestCommand extends Command
@@ -27,12 +26,9 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $response =  (new PricingService)->calculate([
-            "quantity" => "100",
-            "type" => "money"
-        ]);
+        $response =  (new CircleService)->createEntitySecretCipher();
 
-        // dd($response);
+        dd($response);
 
         // AppMailerService::send([
         //     "data" => [

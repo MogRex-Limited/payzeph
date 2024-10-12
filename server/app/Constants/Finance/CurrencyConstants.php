@@ -19,6 +19,11 @@ class CurrencyConstants
         self::DOLLAR_CURRENCY => self::CURRENCY_GROUP,
     ];
 
+    const TYPES = [
+        self::FIAT_GROUP => self::FIAT_GROUP,
+        self::TOKEN_GROUP => self::TOKEN_GROUP,
+    ];
+
     const PROVIDER = "Provider";
     const FLUTTERWAVE = "Flutterwave";
     const FUND_WITH_CARD = "Card";
