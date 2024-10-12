@@ -61,8 +61,8 @@ class CurrencyTableSeeder extends Seeder
                 "name" => "Thai baht",
                 "group" => CurrencyConstants::FIAT_GROUP,
                 "type" => CurrencyConstants::THAI_BAHT_CURRENCY,
-                "short_name" => "NGN",
-                "symbol" => "₦",
+                "short_name" => "THB",
+                "symbol" => "฿",
                 "status" => StatusConstants::ACTIVE
             ],
         ];
