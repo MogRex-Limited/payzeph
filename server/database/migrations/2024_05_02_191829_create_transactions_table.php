@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string("category")->nullable();
             $table->string("batch_no")->nullable();
             $table->string("action")->nullable();
+            $table->string("sender_name")->nullable();
             $table->double("prev_balance")->nullable();
             $table->double("current_balance")->nullable();
             $table->string("status");

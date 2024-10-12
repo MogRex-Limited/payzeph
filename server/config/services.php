@@ -31,8 +31,16 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'termii' => [
-        'api_key' => env('TERMII_API_KEY'),
-        'base_url' => env('TERMII_BASE_URL'),
+    'circle' => [
+        'api_key' => env('CIRCLE_API_KEY'),
+        'base_url' => env('CIRCLE_BASE_URL'),
+        'entity_secret' => env("CIRCLE_ENTITY_SECRET")
+    ],
+
+    'safehaven' => [
+        'client_id' => env('SAFE_HAVEN_CLIENT_ID'),
+        'client_assertion' => env('SAFE_HAVEN_CLIENT_ASSERTION'),
+        'refresh_token' => env('SAFE_HAVEN_REFRESH_TOKEN'),
+        'default_account_number' => env('SAFE_HAVEN_DEBIT_ACCOUNT'),
     ],
 ];

@@ -7,13 +7,17 @@ use App\Http\Controllers\Api\V1\Auth\User\UserRegisterController;
 use App\Http\Controllers\Api\V1\Auth\User\UserVerificationController;
 use App\Http\Controllers\Api\V1\General\GeneralController;
 use App\Http\Controllers\Api\V1\Location\LocationController;
+use App\Http\Controllers\Api\V1\User\Finance\Account\AccountController;
 use App\Http\Controllers\Api\V1\User\Finance\Payment\PaymentController;
 use App\Http\Controllers\Api\V1\User\Finance\Transaction\TransactionController;
 use App\Http\Controllers\Api\V1\User\Finance\Currency\CurrencyController;
 use App\Http\Controllers\Api\V1\User\Finance\Wallet\WalletController;
 use App\Http\Controllers\Api\V1\User\Setting\ApiCredentialController;
 use App\Http\Controllers\Api\V1\User\Setting\ProfileController;
+use App\Http\Controllers\Webhook\SafeHavenWehbookHandlingController;
 use Illuminate\Support\Facades\Route;
+
+Route::post('/safe-haven/webhook/verifications', [SafeHavenWehbookHandlingController::class, 'handleWebhook'])->name('handle-safe-haven-webhook');
 
 Route::middleware(["apiKey"])->group(function () {
     Route::prefix("user")->as("user.")->group(function () {
@@ -37,7 +41,7 @@ Route::middleware(["apiKey"])->group(function () {
         });
 
         Route::middleware(["auth:sanctum"])->group(function () {
-            
+
             Route::get('/2fa/generate-secret', [TwoFactorController::class, 'generateSecretKey']);
             Route::post('/2fa/enable', [TwoFactorController::class, 'enable2FA']);
             Route::post('/2fa/disable', [TwoFactorController::class, 'disable2FA']);
@@ -50,7 +54,7 @@ Route::middleware(["apiKey"])->group(function () {
             Route::prefix("wallets")->as("wallets.")->group(function () {
                 Route::get("/", [WalletController::class, "index"]);
                 Route::get("{wallet}/show", [WalletController::class, "show"]);
-                Route::post("create", [WalletController::class, "create"]);
+                Route::post("fund-wallet", [WalletController::class, "fund"]);
             });
 
             Route::prefix("currencies")->as("currencies.")->group(function () {
@@ -58,9 +62,12 @@ Route::middleware(["apiKey"])->group(function () {
                 Route::get("{currency}/show", [CurrencyController::class, "show"]);
             });
 
-            Route::apiResources([
-                
-            ]);
+            // Account
+            Route::prefix("account")->group(function () {
+                Route::post("generate-dynamic-account", [AccountController::class, "generateDynamicAccount"]);
+            });
+
+            Route::apiResources([]);
 
             Route::prefix("payments")->as("payments.")->group(function () {
                 Route::post("initiate", [PaymentController::class, "initiate"])->name("initiate");

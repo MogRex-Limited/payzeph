@@ -13,7 +13,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Services\Finance\Currency\CurrencyService;
-use Illuminate\Support\Collection;
+use App\Services\Finance\Transaction\TransactionService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -25,9 +25,17 @@ class WalletService
 
     public Transaction $transaction;
 
-    public User $user;
+    public $user;
 
+    public Wallet $wallet;
+
+    public $circle_wallet_service;
     public $currency;
+
+    public function __construct()
+    {
+        $this->circle_wallet_service = new CircleWalletService;
+    }
 
     function setCurrency(string $currency_id)
     {
@@ -35,9 +43,15 @@ class WalletService
         return $this;
     }
 
-    function setUser(User $user)
+    function setUser($user)
     {
         $this->user = $user;
+        return $this;
+    }
+
+    function setWallet(Wallet $wallet)
+    {
+        $this->wallet = $wallet;
         return $this;
     }
 
@@ -77,13 +91,16 @@ class WalletService
             $this->validate($data);
 
             $wallet = $this->wallet();
-
+            $old_wallet_balance = TransactionService::oldWalletBalance($wallet);
+            
             if (!empty($this->transaction_data)) {
                 $this->transaction = (new TransactionService)->create(array_merge([
                     'user_id' => $this->user?->id,
-                    'type' => $data['action'],
+                    'wallet_id' => $wallet->id,
                     'currency_id' => $data['currency_id'],
-                    'amount' => $data['amount']
+                    'amount' => $data['amount'],
+                    'type' => $data['action'],
+                    "prev_wallet_balance" => $old_wallet_balance["balance"],
                 ], $this->transaction_data));
             }
 
@@ -94,6 +111,12 @@ class WalletService
             $wallet->update([
                 "balance" => $wallet->balance + $amount,
                 'total_credit' => $wallet->total_credit + $amount,
+            ]);
+
+            $new_wallet_balance = TransactionService::newWalletBalance($wallet->refresh());
+            
+            $this->transaction->update([
+                "current_balance" => $new_wallet_balance["balance"],
             ]);
         });
     }
@@ -119,12 +142,16 @@ class WalletService
                 throw new WalletException("Insufficient funds");
             }
 
+            $old_wallet_balance = TransactionService::oldWalletBalance($wallet);
+
             if (!empty($this->transaction_data)) {
                 $this->transaction = (new TransactionService)->create(array_merge([
                     'user_id' => $this->user?->id,
+                    'wallet_id' => $wallet->id,
                     'type' => $data['action'],
                     'currency_id' => $data['currency_id'],
-                    'amount' => $data['amount']
+                    'amount' => $data['amount'],
+                    "prev_wallet_balance" => $old_wallet_balance["balance"],
                 ], $this->transaction_data));
             }
 
@@ -135,6 +162,12 @@ class WalletService
             $wallet->update([
                 "balance" => $new_balance,
                 'total_debit' => $wallet->total_debit + $amount,
+            ]);
+
+            $new_wallet_balance = TransactionService::newWalletBalance($wallet->refresh());
+            
+            $this->transaction->update([
+                "current_balance" => $new_wallet_balance["balance"],
             ]);
         });
     }
@@ -196,23 +229,39 @@ class WalletService
         return $wallet;
     }
 
-    public static function create(array $data, $id = null)
+    public static function getByUserId($user_id, $type = CurrencyConstants::NAIRA_CURRENCY): Wallet
+    {
+        $wallet = Wallet::where("user_id", $user_id)
+            ->whereRelation("currency", "type", $type)
+            ->first();
+        return $wallet;
+    }
+
+    public function create(array $data)
     {
         DB::beginTransaction();
         try {
             $validator = Validator::make($data, [
                 "user_id" => "nullable|exists:users,id",
                 'currency_id' => 'required|exists:currencies,id',
-                "type" => "required|string",
+                "type" => "required|string|" . Rule::in(CurrencyConstants::TYPES),
             ]);
 
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
-            
+
             $data =  $validator->validated();
             $data["number"] = generateRandomDigits(10);
             $data["user_id"] ??= auth()->id();
+
+            // if ($data["type"] == CurrencyConstants::TOKEN_GROUP) {
+            //     $wallet_set =  $this->circle_wallet_service
+            //         ->fetchWallelSet();
+            //     $data["wallet_set_id"] = $this->circle_wallet_service
+            //         ->createCircleWallet($wallet_set->ext_wallet_set_id);
+            // }
+
             $wallet = Wallet::firstOrCreate([
                 "user_id" => $data["user_id"],
                 "currency_id" => $data["currency_id"],

@@ -21,7 +21,7 @@ class TransactionConstants
     const BANK_DEPOSIT = "Bank deposit";
     const BANK_TRANSFER = "Bank transfer";
     const WEB_PAYMENT_FOR_UNIT = "WEB_PAYMENT_FOR_UNIT";
-    const SMS_SENT = "SMS sent";
+    const BANK_TRANSFER_DEPOSIT = "BANK_TRANSFER_DEPOSIT";
 
     const TRANSACTION_OPTIONS = [
         StatusConstants::PENDING => "Pending",

@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\User;
 
+use App\Http\Resources\Finance\Wallet\WalletResource;
+use App\Services\Finance\Wallet\WalletService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -14,6 +16,7 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $wallets = (new WalletService)->setUser($this)->wallets()->get();
         return [
             "id" => $this->id,
             "first_name" => $this->first_name,
@@ -26,6 +29,8 @@ class UserResource extends JsonResource
             "business_name" => $this->business_name,
             "business_category" => $this->business_category,
             "email_verified_at" => $this->email_verified_at,
+            "two_factor_enabled" => $this->two_factor_enabled,
+            "wallets" => WalletResource::collection($wallets), 
             "created_at" => $this->created_at,
         ];
     }

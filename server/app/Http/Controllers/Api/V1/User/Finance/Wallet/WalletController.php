@@ -61,4 +61,20 @@ class WalletController extends Controller
             return ApiHelper::problemResponse($e->getMessage(), ApiConstants::SERVER_ERR_CODE);
         }
     }
+
+    public function fund(Request $request)
+    {
+        try {
+            $user = auth()->user();
+            $wallet = $this->wallet_service->create($request->all(), $user);
+            $data = WalletResource::make($wallet);
+            return ApiHelper::validResponse("Wallet created successfully", $data);
+        } catch (ValidationException $e) {
+            return ApiHelper::inputErrorResponse("The given data is invalid", ApiConstants::VALIDATION_ERR_CODE, $e);
+        } catch (WalletException $e) {
+            return ApiHelper::problemResponse($e->getMessage(), ApiConstants::BAD_REQ_ERR_CODE);
+        } catch (\Throwable $e) {
+            return ApiHelper::problemResponse($e->getMessage(), ApiConstants::SERVER_ERR_CODE);
+        }
+    }
 }
