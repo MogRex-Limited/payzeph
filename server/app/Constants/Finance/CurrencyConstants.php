@@ -10,6 +10,7 @@ class CurrencyConstants
     const NAIRA_CURRENCY = "Naira";
     const EURO_CURRENCY = "Euro";
     const POUND_CURRENCY = "Pound";
+    const THAI_BAHT_CURRENCY = "Thai baht";
     const TOKEN_GROUP = "Token";
     const FIAT_GROUP = "Fiat";
 
