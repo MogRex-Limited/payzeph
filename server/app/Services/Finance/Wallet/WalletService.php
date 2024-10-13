@@ -127,7 +127,7 @@ class WalletService
 
             $data = [
                 'user_id' => $this->user?->id,
-                'currency' => $this->currency,
+                'currency_id' => $this->currency->id,
                 'amount' => $amount,
                 'action' => TransactionConstants::DEBIT,
             ];
@@ -205,13 +205,13 @@ class WalletService
         DebitWalletJob::dispatch($this, $amount)->onQueue('wallet-transactions');
     }
 
-    public function wallets($type = "all")
+    public function wallets($type = null)
     {
         $wallets = Wallet::where([
             'user_id' => $this->user?->id,
         ]);
 
-        if ($type != "all") {
+        if (empty($type) || ($type != "all")) {
             $wallets = $wallets->whereHas("currency", function ($currency) {
                 $currency->whereNot("type", CurrencyConstants::USDC_TOKEN);
             });
