@@ -47,29 +47,35 @@ const Login = () => {
         const res = await AuthFxns.loginUser(formData);
         if (res.response.code === 200) {
           sessionStorage.setItem('zeph_token', res.response.data.token);
-          setSending(false);
-          // console.log(res.response.data.user.two_factor_enabled);
-          toast.dismiss(loadingToastId);
           sessionStorage.setItem(
             'zeph_2fa',
             res.response.data.user.two_factor_enabled
           );
+          setSending(false);
+          // console.log(res.response.data.user.two_factor_enabled);
+          toast.dismiss(loadingToastId);
+
+          setErrors({});
+          navigate('/two-factor');
           setFormData({
             email: '',
             password: '',
           });
-          setErrors({});
-          navigate('/two-factor');
         }
       } catch (error) {
         setSending(false);
         toast.dismiss(loadingToastId);
-        if (error.response.data.response.message === 'Invalid data') {
+        if (
+          error.response.data.response.message === 'Invalid data' &&
+          error.response.data.response.errors
+        ) {
           const errorData = error.response.data.response.errors;
           const errorMessages = Object.keys(errorData)
             .map((field) => errorData[field].join(', '))
             .join(' ');
           toast.error(errorMessages);
+        } else if (error.response.data.response.title === 'Operation failed') {
+          toast.error(error.response.data.response.message);
         } else if (error.message) {
           toast.error(error.message);
         } else {
@@ -77,10 +83,6 @@ const Login = () => {
         }
       }
 
-      setFormData({
-        email: '',
-        password: '',
-      });
       setErrors({});
     } else {
       setErrors(formErrors);

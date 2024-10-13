@@ -114,7 +114,7 @@ const TwoFA = () => {
             : 'Please scan the qr code with your Authenticator and enter code to login.'}
         </p>
 
-        {hasenabled2fa === 'null' && (
+        {(hasenabled2fa === 'null' || hasenabled2fa === '0') && (
           <>
             {!isGenerated && (
               <button

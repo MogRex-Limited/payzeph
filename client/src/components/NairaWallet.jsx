@@ -114,7 +114,6 @@ function NairaWallet() {
       const nairaItem = res.response.data.find(
         (item) => item.currency.type === 'Naira'
       );
-      console.log(nairaItem);
       setWalletInfo(nairaItem);
     }
   };
@@ -126,7 +125,6 @@ function NairaWallet() {
     try {
       const res = await WalletFxns.generateAccount(auth?.token, formData);
       if (res.response.code === 200) {
-        console.log(res.response.data);
         setGettingAccount(false);
 
         setAccountDetails(res.response.data);
@@ -162,6 +160,7 @@ function NairaWallet() {
           }));
           setIsProcessing(false);
           setIsActivateModalOpen(false);
+          getwallets();
           toast.success('Wallet activated');
         }
       }
@@ -202,9 +201,9 @@ function NairaWallet() {
   }, [dropdownRef]);
 
   const isOnlyUSDCandUSD = auth.wallets.every(
-    (wallet) =>
-      wallet.currency.short_name === 'USD' ||
-      wallet.currency.short_name === 'USDC'
+    (wallet) => wallet.currency.short_name === 'USD'
+    // ||
+    // wallet.currency.short_name === 'USDC'
   );
 
   return (
