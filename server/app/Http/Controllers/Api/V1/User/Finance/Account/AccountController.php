@@ -6,6 +6,8 @@ use App\Constants\Account\User\UserConstants;
 use App\Constants\Finance\PaymentConstants;
 use App\Constants\General\ApiConstants;
 use App\Exceptions\Finance\Payment\SafeHavenException;
+use App\Exceptions\General\InvalidRequestException;
+use App\Exceptions\General\ModelNotFoundException;
 use App\Helpers\ApiHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Finance\Account\DynamicAccountResource;
@@ -27,7 +29,12 @@ class AccountController extends Controller
     {
         try {
             $user = auth()->user();
-            $wallet = $this->wallet_service->getByUserId($user->id);
+            $wallet = !empty($wallet_id = $request->wallet_id) ? $this->wallet_service->getById($wallet_id) : $this->wallet_service->getByUserId($user->id);
+
+            if (empty($wallet)) {
+                throw new ModelNotFoundException("Select a wallet to proceed");
+            }
+
             $account = (new DynamicAccountPaymentService)
                 ->setUser($user)
                 ->setWallet($wallet)
@@ -39,7 +46,7 @@ class AccountController extends Controller
             return ApiHelper::validResponse("Account generated successfully", $data);
         } catch (ValidationException $e) {
             return ApiHelper::inputErrorResponse("The given data is invalid", ApiConstants::VALIDATION_ERR_CODE);
-        } catch (SafeHavenException $e) {
+        } catch (SafeHavenException | ModelNotFoundException $e) {
             return ApiHelper::problemResponse($e->getMessage(), ApiConstants::BAD_REQ_ERR_CODE);
         } catch (Exception $e) {
             throw $e;

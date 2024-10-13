@@ -231,7 +231,7 @@ class WalletService
         return $wallet;
     }
 
-    public static function getByUserId($user_id, $type = CurrencyConstants::NAIRA_CURRENCY): Wallet
+    public static function getByUserId($user_id, $type = CurrencyConstants::NAIRA_CURRENCY)
     {
         $wallet = Wallet::where("user_id", $user_id)
             ->whereRelation("currency", "type", $type)
