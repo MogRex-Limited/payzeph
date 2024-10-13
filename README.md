@@ -53,7 +53,9 @@ yarn dev
 
 - This shows the users dashboard on the wallet Page
 
-![wallet](https://i.ibb.co/ZHZwfDQ/image.png)
+![wallet](https://i.ibb.co/mDMbMcL/image.png)
+
+![wallet](https://i.ibb.co/LgNvTTn/image.png)
 
 ## Further Improvement
 
