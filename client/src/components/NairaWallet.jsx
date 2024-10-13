@@ -202,7 +202,9 @@ function NairaWallet() {
   }, [dropdownRef]);
 
   const isOnlyUSDCandUSD = auth.wallets.every(
-    (wallet) => wallet.currency.short_name === 'USD'
+    (wallet) =>
+      wallet.currency.short_name === 'USD' ||
+      wallet.currency.short_name === 'USDC'
   );
 
   return (
