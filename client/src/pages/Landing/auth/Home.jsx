@@ -51,9 +51,9 @@ const Home = () => {
         <div className='max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center'>
           <div className='md:w-1/2 animate-slide-in-left'>
             <img
-              src='https://via.placeholder.com/400'
+              src='https://media.istockphoto.com/id/1140147076/photo/forex-trading-graph-and-candlestick-chart-suitable-for-financial-investment-concept-economy.webp?a=1&b=1&s=612x612&w=0&k=20&c=L9_fzSaV5gcPDB9P95jblF3OiwKZNzLw2-7-eN2Rqgc='
               alt='About PayZeph'
-              className='rounded-lg shadow-lg'
+              className='rounded-lg shadow-lg h-[350px] w-[300px'
             />
           </div>
           <div className='md:w-1/2 mt-8 md:mt-0 md:pl-12 animate-slide-in-right'>
