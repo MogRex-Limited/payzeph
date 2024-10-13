@@ -63,6 +63,12 @@ const Register = () => {
         const res = await AuthFxns.registerUser(formData);
         if (res.response.code === 200) {
           sessionStorage.setItem('zeph_email', formData.email);
+          sessionStorage.setItem('zeph_token', res.response.data.token);
+          sessionStorage.setItem(
+            'zeph_2fa',
+            res.response.data.user.two_factor_enabled
+          );
+          // console.log(res.response.data);
           setSending(false);
           toast.dismiss(loadingToastId);
           toast.success('Account created');

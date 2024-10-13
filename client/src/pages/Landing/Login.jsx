@@ -48,14 +48,18 @@ const Login = () => {
         if (res.response.code === 200) {
           sessionStorage.setItem('zeph_token', res.response.data.token);
           setSending(false);
-          console.log(res.response.data.user);
+          // console.log(res.response.data.user.two_factor_enabled);
           toast.dismiss(loadingToastId);
-          // setFormData({
-          //   email: '',
-          //   password: '',
-          // });
-          // setErrors({});
-          // navigate('/two-factor');
+          sessionStorage.setItem(
+            'zeph_2fa',
+            res.response.data.user.two_factor_enabled
+          );
+          setFormData({
+            email: '',
+            password: '',
+          });
+          setErrors({});
+          navigate('/two-factor');
         }
       } catch (error) {
         setSending(false);

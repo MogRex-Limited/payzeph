@@ -1,10 +1,11 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthProvider';
 
 function DashNav() {
   const { auth, setAuth } = useContext(AuthContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -14,6 +15,19 @@ function DashNav() {
     sessionStorage.clear();
     setAuth(null);
   };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   return (
     <nav
@@ -36,14 +50,19 @@ function DashNav() {
                 className='h-10 w-10 rounded-full'
               />
               <div className='text-white text-left text-sm'>
-                <div>{auth?.name}</div>
+                <div>
+                  {auth?.first_name} {auth?.last_name}
+                </div>
                 <div className='text-[11px]'>{auth?.email}</div>
               </div>
             </button>
 
             {/* Dropdown Menu */}
             {dropdownOpen && (
-              <div className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg'>
+              <div
+                ref={dropdownRef}
+                className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg'
+              >
                 <Link
                   to='/dashboard/profile'
                   className='block px-4 py-2 text-gray-700 hover:bg-[#071847] hover:rounded-t-md hover:text-white'
