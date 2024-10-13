@@ -89,7 +89,10 @@ const TwoFA = () => {
       } catch (error) {
         setSending(false);
         toast.dismiss(loadingToastId);
-        if (error.message & !error.response.data.response.message) {
+        if (error.response.data.message === 'Unauthenticated.') {
+          toast.error('Session expired');
+          navigate('/login');
+        } else if (error.message & !error.response.data.response.message) {
           toast.error(error.message);
         } else {
           toast.error(error.response.data.response.message);
