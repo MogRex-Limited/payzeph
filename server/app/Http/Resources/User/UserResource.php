@@ -34,4 +34,18 @@ class UserResource extends JsonResource
             "created_at" => $this->created_at,
         ];
     }
+
+    public static function custom($model)
+    {
+        return [
+            "id" => $model->id,
+            "first_name" => $model->first_name,
+            "middle_name" => $model->middle_name,
+            "last_name" => $model->last_name,
+            "email" => $model->email,
+            "zeph_id" => $model->zeph_id,
+            "status" => $model->status,
+            "created_at" => $model->created_at,
+        ];
+    }
 }

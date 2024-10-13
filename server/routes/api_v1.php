@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\User\Finance\Account\AccountController;
 use App\Http\Controllers\Api\V1\User\Finance\Payment\PaymentController;
 use App\Http\Controllers\Api\V1\User\Finance\Transaction\TransactionController;
 use App\Http\Controllers\Api\V1\User\Finance\Currency\CurrencyController;
+use App\Http\Controllers\Api\V1\User\Finance\Transfer\WalletTransferController;
 use App\Http\Controllers\Api\V1\User\Finance\Wallet\WalletController;
 use App\Http\Controllers\Api\V1\User\Setting\ApiCredentialController;
 use App\Http\Controllers\Api\V1\User\Setting\ProfileController;
@@ -68,8 +69,7 @@ Route::middleware(["apiKey"])->group(function () {
                 Route::post("generate-dynamic-account", [AccountController::class, "generateDynamicAccount"]);
             });
 
-            Route::apiResources([]);
-
+            // Payments
             Route::prefix("payments")->as("payments.")->group(function () {
                 Route::post("initiate", [PaymentController::class, "initiate"])->name("initiate");
             });

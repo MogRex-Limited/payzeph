@@ -22,6 +22,7 @@ class TransactionConstants
     const BANK_TRANSFER = "Bank transfer";
     const WEB_PAYMENT_FOR_UNIT = "WEB_PAYMENT_FOR_UNIT";
     const BANK_TRANSFER_DEPOSIT = "BANK_TRANSFER_DEPOSIT";
+    const INTERNAL_TRANSFER_USER_TO_USER = "INTERNAL_TRANSFER_USER_TO_USER";
 
     const TRANSACTION_OPTIONS = [
         StatusConstants::PENDING => "Pending",

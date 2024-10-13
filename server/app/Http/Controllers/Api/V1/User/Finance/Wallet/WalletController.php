@@ -26,7 +26,7 @@ class WalletController extends Controller
     {
         try {
             $user = auth()->user();
-            $wallets = $this->wallet_service->setUser($user)->wallets($user)->get();
+            $wallets = $this->wallet_service->setUser($user)->wallets()->get();
             $data = WalletResource::collection($wallets);
             return ApiHelper::validResponse("Wallets returned successfully", $data);
         } catch (Exception $e) {
