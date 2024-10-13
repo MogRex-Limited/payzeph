@@ -14,10 +14,13 @@ import { naira, thaiBaht } from '../assets';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import AuthContext from '../context/AuthProvider';
 import WalletFxns from '../services/walletServices';
+import { useNavigate } from 'react-router-dom';
+import formatWithCommas from '../hooks/formatWithComma';
+import parseNumber from '../hooks/parseNumber';
 
 function NairaWallet() {
+  const navigate = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
-  const [balance, setBalance] = useState(0);
   const [isFundModalOpen, setIsFundModalOpen] = useState(false);
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
   const [isActivateModalOpen, setIsActivateModalOpen] = useState(false);
@@ -30,25 +33,38 @@ function NairaWallet() {
   const [currenciesId, setCurrenciesId] = useState('');
   // const [currencies, setCurrencies] = useState([]);
   const [walletInfo, setWalletInfo] = useState();
+  const [balance, setBalance] = useState(0);
   const [accountDetails, setAccountDetails] = useState();
+  const [gettingAccount, setGettingAccount] = useState();
 
-  const formatWithCommas = (number) => {
-    return number.toLocaleString();
-  };
+  useEffect(() => {
+    setBalance(walletInfo?.balance || 0);
+  }, [walletInfo]);
 
-  const parseNumber = (string) => {
-    return parseInt(string.replace(/,/g, ''), 10);
-  };
-
-  const handleFund = () => {
+  const handleFund = async () => {
     setIsProcessing(true);
-    setTimeout(() => {
-      setBalance(balance + parseInt(amount));
-      setIsProcessing(false);
-      setIsFundModalOpen(false);
-      toast.success('Funds added successfully!');
-      setAmount('');
-    }, 3000);
+    const formData = new FormData();
+    formData.append('wallet_id', walletInfo?.id);
+    formData.append('reference', accountDetails?.reference);
+    formData.append('account_number', accountDetails?.account_number);
+    formData.append('amount', parseInt(amount));
+
+    try {
+      const res = await WalletFxns.fundWallet(formData, auth?.token);
+      if (res.response.code === 200) {
+        setIsProcessing(false);
+        setIsFundModalOpen(false);
+        toast.success('Funds added successfully!');
+        setAmount('');
+        getwallets();
+        setBalance(walletInfo?.balance);
+      }
+    } catch (error) {
+      if (error.response.data.message === 'Unauthenticated.') {
+        toast.error('Session expired');
+        navigate('/login');
+      }
+    }
   };
 
   const handleSend = () => {
@@ -74,12 +90,21 @@ function NairaWallet() {
   };
 
   const getcurrency = async () => {
-    const res = await WalletFxns.getCurrencies(auth?.token);
-    if (res.response.code === 200) {
-      const nairaItem = res.response.data.find((item) => item.type === 'Naira');
-      const nairaId = nairaItem ? nairaItem.id : null;
-      // setCurrencies(res.response.data);
-      setCurrenciesId(nairaId);
+    try {
+      const res = await WalletFxns.getCurrencies(auth?.token);
+      if (res.response.code === 200) {
+        const nairaItem = res.response.data.find(
+          (item) => item.type === 'Naira'
+        );
+        const nairaId = nairaItem ? nairaItem.id : null;
+        // setCurrencies(res.response.data);
+        setCurrenciesId(nairaId);
+      }
+    } catch (error) {
+      if (error.response.data.message === 'Unauthenticated.') {
+        toast.error('Session expired');
+        navigate('/login');
+      }
     }
   };
 
@@ -95,17 +120,21 @@ function NairaWallet() {
   };
 
   const getAccount = async () => {
+    setGettingAccount(true);
     const formData = new FormData();
     formData.append('wallet_id', walletInfo?.id);
-    const res = await WalletFxns.generateAccount(auth?.token, formData);
     try {
+      const res = await WalletFxns.generateAccount(auth?.token, formData);
       if (res.response.code === 200) {
         console.log(res.response.data);
+        setGettingAccount(false);
+
         setAccountDetails(res.response.data);
         setIsProcessing(false);
       }
     } catch (error) {
       setIsProcessing(false);
+      setGettingAccount(false);
       if (error.message & !error.response.data.response.message) {
         toast.error(error.message);
       } else {
@@ -173,7 +202,9 @@ function NairaWallet() {
   }, [dropdownRef]);
 
   const isOnlyUSDCandUSD = auth.wallets.every(
-    (wallet) => wallet.currency.short_name === 'USD'
+    (wallet) =>
+      wallet.currency.short_name === 'USD' ||
+      wallet.currency.short_name === 'USDC'
   );
 
   return (
@@ -410,7 +441,9 @@ function NairaWallet() {
                         className='w-32 h-32 mb-4'
                       />
                       <p className='text-white text-lg'>
-                        Processing your transaction...
+                        {gettingAccount
+                          ? 'Securing channel...'
+                          : ' Processing your transaction...'}
                       </p>
                     </div>
                   )}

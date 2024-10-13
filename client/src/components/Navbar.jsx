@@ -28,7 +28,7 @@ function Navbar() {
 
   return (
     <nav
-      className={`fixed w-full z-10 transition-colors duration-300 ${
+      className={`fixed w-full z-10 py-2 transition-colors duration-300 ${
         scrollPosition > 0 ? 'bg-white shadow-xl' : 'bg-transparent'
       }`}
     >

@@ -1,10 +1,11 @@
 import { useContext, useState } from 'react';
 import AuthContext from '../context/AuthProvider';
+import { toast } from 'sonner';
 
 const EditPersonal = () => {
   const { auth } = useContext(AuthContext);
   const [personalInfo, setPersonalInfo] = useState({
-    name: auth?.name || '',
+    name: auth?.first_name + ' ' + auth?.last_name || '',
     email: auth?.email || '',
   });
   const [passwordInfo, setPasswordInfo] = useState({
@@ -28,12 +29,25 @@ const EditPersonal = () => {
 
   const handlePersonalInfoSubmit = (e) => {
     e.preventDefault();
-    console.log('Personal Info Updated:', personalInfo);
+    const loadingToastId = toast.loading('Updating info...');
+    setTimeout(() => {
+      toast.dismiss(loadingToastId);
+      toast.success('Personal Info Updated');
+    }, 3000);
   };
 
   const handlePasswordInfoSubmit = (e) => {
     e.preventDefault();
-    console.log('Password Info Updated:', passwordInfo);
+    const loadingToastId = toast.loading('Updating info...');
+    setTimeout(() => {
+      toast.success('Password Info Updated');
+      toast.dismiss(loadingToastId);
+      setPasswordInfo({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
+    }, 3000);
   };
 
   return (

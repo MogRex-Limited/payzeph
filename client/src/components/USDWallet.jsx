@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useContext, useEffect, useState } from 'react';
 import {
   Dialog,
   DialogPanel,
@@ -11,14 +12,30 @@ import { CheckCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Lottie from 'lottie-react';
 import processingAnimation from '../assets/processing.json';
 import { toast } from 'sonner';
+import WalletFxns from '../services/walletServices';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../context/AuthProvider';
 
 const UsdWallet = () => {
+  const navigate = useNavigate();
+  const { auth } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fundAmount, setFundAmount] = useState('');
   const [fundCurrency, setFundCurrency] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [accountDetails, setAccountDetails] = useState();
+  const [gettingAccount, setGettingAccount] = useState();
+  const [walletInfo, setWalletInfo] = useState();
+
+  useEffect(() => {
+    setBalance(walletInfo?.balance || 0);
+  }, [walletInfo]);
+
+  const formatWithCommas = (number) => {
+    return number.toLocaleString();
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -32,7 +49,43 @@ const UsdWallet = () => {
     setIsModalOpen(false);
   };
 
-  const handleFundSubmit = (e) => {
+  const getwallets = async () => {
+    const res = await WalletFxns.getWallets(auth?.token);
+    if (res.response.code === 200) {
+      const nairaItem = res.response.data.find(
+        (item) => item.currency.type === 'Dollar'
+      );
+      setWalletInfo(nairaItem);
+    }
+  };
+
+  const getAccount = async () => {
+    setGettingAccount(true);
+    const formData = new FormData();
+    formData.append('wallet_id', walletInfo?.id);
+    try {
+      const res = await WalletFxns.generateAccount(auth?.token, formData);
+      if (res.response.code === 200) {
+        setGettingAccount(false);
+        setAccountDetails(res.response.data);
+        setIsProcessing(false);
+      }
+    } catch (error) {
+      setIsProcessing(false);
+      setGettingAccount(false);
+      if (error.message & !error.response.data.response.message) {
+        toast.error(error.message);
+      } else {
+        toast.error(error.response.data.response.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getwallets();
+  }, []);
+
+  const handleFundSubmit = async (e) => {
     e.preventDefault();
 
     if (!fundAmount || !fundCurrency) {
@@ -45,12 +98,29 @@ const UsdWallet = () => {
       return;
     }
 
-    // if (fundCurrency !== 'Naira') {
-    //   alert(`${fundCurrency} funding is coming soon!`);
-    //   return;
-    // }
-
     setIsProcessing(true);
+    const formData = new FormData();
+    formData.append('wallet_id', walletInfo?.id);
+    formData.append('reference', accountDetails?.reference);
+    formData.append('account_number', accountDetails?.account_number);
+    formData.append('amount', parseInt(fundAmount));
+
+    try {
+      const res = await WalletFxns.fundWallet(formData, auth?.token);
+      if (res.response.code === 200) {
+        setIsProcessing(false);
+        closeModal();
+        toast.success('Funds added successfully!');
+        setFundAmount('');
+        getwallets();
+        setBalance(walletInfo?.balance);
+      }
+    } catch (error) {
+      if (error.response.data.message === 'Unauthenticated.') {
+        toast.error('Session expired');
+        navigate('/login');
+      }
+    }
 
     setTimeout(() => {
       setIsProcessing(false);
@@ -88,12 +158,17 @@ const UsdWallet = () => {
               <h4 className='text-lg font-semibold text-gray-700'>
                 USD Wallet
               </h4>
-              <p className='text-sm text-gray-500'>Balance: ${balance}</p>
+              <p className='text-sm text-gray-500'>
+                Balance: ${formatWithCommas(balance)}
+              </p>
             </div>
           </div>
           <span className='text-xs font-semibold px-2.5 py-0.5'>
             <button
-              onClick={openModal}
+              onClick={() => {
+                openModal();
+                getAccount();
+              }}
               className='bg-[#2774cb] text-white border border-[#2774cb] hover:text-[#2774cb] hover:bg-white rounded-lg px-4 py-2 font-bold transition duration-200'
             >
               Fund
@@ -205,7 +280,7 @@ const UsdWallet = () => {
                               <select
                                 id='fiat'
                                 name='fiat'
-                                value={fundCurrency === 'Fiat' ? 'Naira' : ''}
+                                value={fundCurrency === 'Fiat' ? 'USD' : ''}
                                 onChange={(e) =>
                                   setFundCurrency(e.target.value)
                                 }
@@ -215,24 +290,21 @@ const UsdWallet = () => {
                                 <option value='' disabled>
                                   Select fiat currency
                                 </option>
-                                <option value='Naira'>Naira</option>
-                                <option value='Ghana Cedis' disabled>
-                                  Ghana Cedis (Coming Soon)
-                                </option>
-                                <option value='SA Rands' disabled>
-                                  SA Rands (Coming Soon)
+                                <option value='USD'>USD</option>
+                                <option value='Punds' disabled>
+                                  Pounds Sterling (Coming Soon)
                                 </option>
                               </select>
                             </div>
                           )}
-                          {/* <div className='mt-6'>
+                          <div className='mt-6'>
                             <button
                               type='submit'
                               className='w-full px-4 py-2 bg-[#2774cb] text-white rounded-lg hover:bg-white hover:text-[#2774cb] border border-[#2774cb] transition duration-200'
                             >
                               Fund
                             </button>
-                          </div> */}
+                          </div>
                         </form>
                       </>
                     )}
@@ -246,7 +318,9 @@ const UsdWallet = () => {
                           className='w-32 h-32 mb-4'
                         />
                         <p className='text-white text-lg'>
-                          Processing your transaction...
+                          {gettingAccount
+                            ? 'Securing channel...'
+                            : ' Processing your transaction...'}
                         </p>
                       </div>
                     )}
@@ -263,7 +337,7 @@ const UsdWallet = () => {
                   </div>
 
                   {/* Close button for small screens */}
-                  {!isProcessing && !isSuccess && (
+                  {/* {!isProcessing && !isSuccess && (
                     <div className='mt-5 sm:mt-6'>
                       <button
                         type='button'
@@ -273,7 +347,7 @@ const UsdWallet = () => {
                         Fund
                       </button>
                     </div>
-                  )}
+                  )} */}
                 </DialogPanel>
               </TransitionChild>
             </div>
