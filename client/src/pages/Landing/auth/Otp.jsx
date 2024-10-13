@@ -40,7 +40,7 @@ const OTPVerificationPage = () => {
           toast.dismiss(loadingToastId);
           sessionStorage.removeItem('zeph_email');
           toast.success('OTP verified.');
-          navigate('/login');
+          navigate('/two-factor');
         }
       } catch (error) {
         setSending(false);

@@ -99,7 +99,6 @@ const TwoFA = () => {
       toast.error('Invalid OTP. Please try again.');
     }
   };
-
   return (
     <div className='flex flex-col items-center justify-center min-h-screen mbg-gradient-to-br mfrom-blue-800 mto-purple-600 bg-gradient-to-br from-web3Bright-100 via-web3Bright-200 to-web3Bright-300 text-white'>
       <motion.div
@@ -115,7 +114,7 @@ const TwoFA = () => {
             : 'Please scan the qr code with your Authenticator and enter code to login.'}
         </p>
 
-        {hasenabled2fa === '0' && (
+        {hasenabled2fa === 'null' && (
           <>
             {!isGenerated && (
               <button
@@ -135,7 +134,7 @@ const TwoFA = () => {
 
             {isGenerated && (
               <>
-                <div className='flex space-x-6 my-2'>
+                <div className='flex space-x-2 sm:space-x-6 my-2'>
                   {otp.map((digit, index) => (
                     <input
                       key={index}
