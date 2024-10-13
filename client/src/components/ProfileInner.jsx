@@ -11,6 +11,7 @@ const ProfileInner = () => {
     zephLink: auth?.zephLink || 'dfreedfr',
     zephCode: auth?.zephCode || 'e54dftr',
   });
+  console.log(auth);
 
   return (
     <div className='p-6 rounded-lg text-gray-800 shadow-xl bg-gray-100  '>
@@ -18,44 +19,45 @@ const ProfileInner = () => {
         <h2 className='text-3xl font-semibold text-gray-900 mb-6'>Profile</h2>
 
         {/* User Information */}
-        <div className='grid grid-cols-1 md:grid-cols-12 items-top justify-between  space-x-4 mb-8'>
-          {/* User icon */}
+        <div className='grid grid-cols-1 gap-8 md:grid-cols-12 items-top justify-between    mb-8'>
           <div className='bg-white rounded-lg md:col-span-8 p-4 shadow-md'>
             <div className='flex items-center'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='h-16 w-16 text-gray-600'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
-                />
-              </svg>
+              <img
+                src={auth?.avatar2 || 'https://via.placeholder.com/40'}
+                alt='User Avatar'
+                className='h-16 w-16 mr-3 rounded-full'
+              />
 
               <div>
                 <h3 className='text-xl font-bold text-gray-600'>
-                  {personalInfo.name}
+                  {auth?.first_name} {auth?.last_name}
                 </h3>
-                <p className='text-gray-400'>{personalInfo.email}</p>
+                <p className='text-gray-400'>{auth?.email}</p>
               </div>
             </div>
             <div className='mt-4'>
               <p className='text-gray-900 mb-2 font-bold'>
-                ZephID:{' '}
-                <span className='font-medium'>{personalInfo.zephID}</span>
+                ZephID: <span className='font-medium'>{auth?.zeph_id}</span>
               </p>
               <p className='text-gray-900 mb-2 font-bold'>
-                ZephLink:
-                <span className='font-medium'>{personalInfo.zephLink}</span>
+                Phone number:{' '}
+                <span className='font-medium'>{auth?.phone_number}</span>
               </p>
               <p className='text-gray-900 mb-2 font-bold'>
-                ZephCode:{' '}
-                <span className='font-medium'>{personalInfo.zephCode}</span>
+                Enabled 2FA:{' '}
+                <span className='font-medium'>
+                  {auth?.two_factor_enabled === 1 ? 'Yes' : 'No'}
+                </span>
+              </p>
+              <p className='text-gray-900 mb-2 font-bold'>
+                ZephLink:{' '}
+                <span className='font-medium'>
+                  https://payzeph.com/{auth?.zeph_id}
+                </span>
+              </p>
+              <p className='text-gray-900 mb-2 font-bold'>
+                No. of active wallets:{' '}
+                <span className='font-medium'>{auth?.wallets.length}</span>
               </p>
             </div>
           </div>

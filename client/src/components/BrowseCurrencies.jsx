@@ -16,7 +16,7 @@ function BrowseCurrenciesButton() {
     <>
       {/* Button to trigger the modal */}
       <button
-        className='flex items-center space-x-1 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition'
+        className='flex items-center space-x-1 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition w-fit'
         onClick={() => setIsOpen(true)}
       >
         <svg

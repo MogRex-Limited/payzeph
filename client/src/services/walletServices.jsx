@@ -30,10 +30,10 @@ const generateWallet = async (token, params) => {
   }
 };
 
-const fundWallet = async (params) => {
+const fundWallet = async (params, token) => {
   try {
     const url = `${BASE_URL}/user/wallets/fund-wallet`;
-    const response = await axios.post(url, params, axiosConfig());
+    const response = await axios.post(url, params, axiosConfig(token));
 
     return handleResponse(response);
   } catch (error) {
