@@ -28,7 +28,7 @@ function NairaWallet() {
   const [selectedCurrency, setSelectedCurrency] = useState('naira');
   const dropdownRef = useRef(null);
   const [currenciesId, setCurrenciesId] = useState('');
-  const [currencies, setCurrencies] = useState([]);
+  // const [currencies, setCurrencies] = useState([]);
   const [walletInfo, setWalletInfo] = useState();
   const [accountDetails, setAccountDetails] = useState();
 
@@ -78,7 +78,7 @@ function NairaWallet() {
     if (res.response.code === 200) {
       const nairaItem = res.response.data.find((item) => item.type === 'Naira');
       const nairaId = nairaItem ? nairaItem.id : null;
-      setCurrencies(res.response.data);
+      // setCurrencies(res.response.data);
       setCurrenciesId(nairaId);
     }
   };

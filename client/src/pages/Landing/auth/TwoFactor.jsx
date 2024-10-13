@@ -11,7 +11,7 @@ const TwoFA = () => {
   const navigate = useNavigate();
   const [img, setImg] = useState();
   const [isGenerated, setGenerated] = useState();
-  const { auth, setAuth } = useContext(AuthContext);
+  const { setAuth } = useContext(AuthContext);
 
   const handleChange = (index, value) => {
     if (value.length <= 1) {

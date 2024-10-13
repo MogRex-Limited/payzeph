@@ -2,7 +2,6 @@ import { Fragment, useState } from 'react';
 import {
   Description,
   Dialog,
-  DialogDescription,
   DialogPanel,
   DialogTitle,
   Transition,
