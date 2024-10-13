@@ -73,7 +73,7 @@ const TwoFA = () => {
           toast.dismiss(loadingToastId);
           toast.success('OTP verified.');
           setOtp(['', '', '', '', '', '']);
-          console.log(res.response.data);
+          // console.log(res.response.data);
           setAuth({
             ...res.response.data,
             token: token,

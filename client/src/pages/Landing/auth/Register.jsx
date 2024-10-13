@@ -68,7 +68,7 @@ const Register = () => {
             'zeph_2fa',
             res.response.data.user.two_factor_enabled
           );
-          console.log(res.response.data);
+          // console.log(res.response.data);
           setSending(false);
           toast.dismiss(loadingToastId);
           toast.success('Account created');
