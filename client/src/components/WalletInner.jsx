@@ -13,8 +13,11 @@ import WalletFxns from '../services/walletServices';
 import AuthContext from '../context/AuthProvider';
 import WatchListCard from './WatchList';
 import formatWithCommas from '../hooks/formatWithComma';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 const WalletInner = () => {
+  const navigate = useNavigate();
   const { auth } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
   const [nairaWalletInfo, setNairaWalletInfo] = useState();
@@ -29,16 +32,23 @@ const WalletInner = () => {
   };
 
   const getwallets = async () => {
-    const res = await WalletFxns.getWallets(auth?.token);
-    if (res.response.code === 200) {
-      const nairaItem = res.response.data.find(
-        (item) => item.currency.type === 'Naira'
-      );
-      const dollarItem = res.response.data.find(
-        (item) => item.currency.type === 'Dollar'
-      );
-      setDollarWalletInfo(dollarItem);
-      setNairaWalletInfo(nairaItem);
+    try {
+      const res = await WalletFxns.getWallets(auth?.token);
+      if (res.response.code === 200) {
+        const nairaItem = res.response.data.find(
+          (item) => item.currency.type === 'Naira'
+        );
+        const dollarItem = res.response.data.find(
+          (item) => item.currency.type === 'Dollar'
+        );
+        setDollarWalletInfo(dollarItem);
+        setNairaWalletInfo(nairaItem);
+      }
+    } catch (error) {
+      if (error.response.data.message === 'Unauthenticated.') {
+        toast.error('Session expired');
+        navigate('/login');
+      }
     }
   };
 
