@@ -2,7 +2,7 @@
 
 ## Description
 
-Payzeph is a groundbreaking platform providing global access to digital dollars (USD) through blockchain technology, particularly benefiting users in regions with limited access to USD, like Africa. Key features include easy user registration with two-factor authentication, unique user identifiers (ZephID, ZephCode, and ZephLink) for seamless transactions, and automatic USDC wallet creation. Payzeph addresses the challenge of USD accessibility by integrating Circle's USDC and Circle Mint for efficient transactions, while emphasizing financial literacy and user-friendly design. Future plans include expanding to other fiat currencies and enhancing security measures, ensuring a robust financial solution.
+Payzeph is a groundbreaking platform providing global access to digital dollars (USD) through blockchain technology, particularly benefiting users in regions with limited access to USD, like Africa. Key features include easy user registration with two-factor authentication, unique user identifiers (ZephID, ZephCode, and ZephLink) for seamless transactions, and automatic USDC wallet creation. Payzeph addresses the challenge of USD accessibility by integrating Circle's USDC, Programmable wallets and Circle Mint for efficient transactions, while emphasizing financial literacy and user-friendly design. Future plans include expanding to other fiat currencies and enhancing security measures, ensuring a robust financial solution.
 
 ## Testing PayZeph
 
